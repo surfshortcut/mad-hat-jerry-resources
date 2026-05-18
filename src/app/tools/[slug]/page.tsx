@@ -8,6 +8,7 @@ import {
   Send,
 } from "lucide-react";
 
+import { BodyContent } from "@/components/BodyContent";
 import { ToolCover } from "@/components/ToolCover";
 import { getLocale, getTool, tools } from "@/lib/tools";
 
@@ -154,13 +155,7 @@ export default async function ToolPage({ params, searchParams }: PageProps) {
               <h2 className="text-2xl font-semibold">
                 {section.heading[locale]}
               </h2>
-              <div className="mt-4 space-y-3">
-                {section.body[locale].map((item) => (
-                  <p key={item} className="leading-7 text-[#5f574e]">
-                    {item}
-                  </p>
-                ))}
-              </div>
+              <BodyContent items={section.body[locale]} />
               {section.links ? (
                 <div className="mt-5 grid gap-3">
                   {section.links.map((resource) => (

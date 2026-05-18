@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Box, ScanSearch, Sparkles } from "lucide-react";
+import { BookOpen, Box, Sparkles } from "lucide-react";
 
 import type { Locale, Tool } from "@/lib/tools";
 
@@ -50,8 +50,8 @@ export function ToolCover({
         </p>
       </div>
       <div className="flex items-center gap-2 text-sm font-semibold">
-        <ScanSearch className="h-4 w-4" aria-hidden="true" />
-        <span>Comment {tool.keyword}</span>
+        <BookOpen className="h-4 w-4" aria-hidden="true" />
+        <span>{locale === "zh" ? "攻略資源" : "Resource guide"}</span>
       </div>
     </div>
   );

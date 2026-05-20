@@ -380,8 +380,8 @@ export const tools: Tool[] = [
       zh: "先裝這三個 skills",
     },
     shareIntro: {
-      en: "Most AI skills are just fancy prompts. These three are different because they give agents memory, process, and a way to reuse your workflow. Install all three from skills.sh below.",
-      zh: "大多數 AI skills 只是包裝過的 prompt。這三個不一樣 — 它們讓 agent 有記憶、有流程、可以把你的工作流封裝成可重複使用的模組。下面的 skills.sh 連結可以直接安裝。",
+      en: "Start with these three if you want agents to behave more like a working system. One keeps context in files, one adds engineering discipline, and one turns your repeated prompts into reusable skills.",
+      zh: "如果你想讓 AI agent 更像一套工作系統，可以先從這三個開始。一個把上下文留在檔案裡，一個補上工程流程，一個把你常用的 prompt 變成可重複使用的 skill。",
     },
     shareLinks: [
       {
@@ -405,19 +405,19 @@ export const tools: Tool[] = [
         },
         body: {
           en: [
-            "**Use this when** the job is too big for one chat — multi-step research, long refactors, or anything that needs to survive a `/clear` or a context reset.",
-            "It writes three persistent markdown files the agent re-reads before each major step:",
+            "Use this when the job is too big for one chat: multi-step research, long refactors, or anything that needs to survive a `/clear` or context reset.",
+            "The skill creates three markdown files that the agent can keep reading as the work moves forward.",
             {
               type: "list",
               items: [
-                "**`task_plan.md`** — the plan",
-                "**`findings.md`** — what it learned",
-                "**`progress.md`** — what's done",
+                "`task_plan.md` keeps the plan visible.",
+                "`findings.md` stores what the agent learned.",
+                "`progress.md` tracks what has already been done.",
               ],
             },
-            "**Install:**",
+            "Install command:",
             { type: "install", command: "npx skills add othmanadi/planning-with-files" },
-            "**Example prompt:**",
+            "Prompt to try:",
             {
               type: "list",
               items: [
@@ -426,19 +426,19 @@ export const tools: Tool[] = [
             },
           ],
           zh: [
-            "**什麼時候用：**任務太大、一個 chat 裝不下時 — 多步驟研究、長 refactor、或任何需要撐過 `/clear` 或 context reset 的工作。",
+            "任務太大、一個 chat 裝不下時可以用它：多步驟研究、長 refactor，或任何需要撐過 `/clear` 和 context reset 的工作。",
             "它會建三個 markdown 檔，agent 每次大動作前都會重新讀一次：",
             {
               type: "list",
               items: [
-                "**`task_plan.md`** — 計畫",
-                "**`findings.md`** — 過程中學到的東西",
-                "**`progress.md`** — 已經做完什麼",
+                "`task_plan.md` 放計畫。",
+                "`findings.md` 放過程中學到的東西。",
+                "`progress.md` 放已經做完什麼。",
               ],
             },
-            "**安裝：**",
+            "安裝指令：",
             { type: "install", command: "npx skills add othmanadi/planning-with-files" },
-            "**Prompt 範例：**",
+            "Prompt 範例：",
             {
               type: "list",
               items: [
@@ -465,28 +465,28 @@ export const tools: Tool[] = [
         },
         body: {
           en: [
-            "**Use this when** the agent likes to jump straight into editing files. Superpowers is a **skill pack**, not a single skill — it forces the agent through gates before it can call something \"done\":",
+            "Use Superpowers when the agent keeps jumping straight into code. It is a skill pack, not a single skill, and it adds checkpoints before the agent can call something done.",
             {
               type: "list",
               items: [
-                "**brainstorm** → pick the approach",
-                "**plan** → write the diff out first",
-                "**TDD** → failing test before implementation",
-                "**debug** → root-cause, not guess-and-patch",
-                "**review** → check the change against the plan",
-                "**verify** → prove it actually works",
+                "`brainstorm` picks the approach.",
+                "`plan` writes the intended change first.",
+                "`TDD` starts with a failing test when the risk is high enough.",
+                "`debug` looks for the root cause instead of guessing.",
+                "`review` checks the change against the plan.",
+                "`verify` proves the result works.",
               ],
             },
-            "**Install:**",
+            "Install command:",
             { type: "install", command: "npx skills add obra/superpowers" },
-            "**Example prompt — feature work:**",
+            "Feature prompt:",
             {
               type: "list",
               items: [
                 "Use Superpowers to add a rate limiter to my API.",
               ],
             },
-            "**Another prompt — bug fix:**",
+            "Bug-fix prompt:",
             {
               type: "list",
               items: [
@@ -495,28 +495,28 @@ export const tools: Tool[] = [
             },
           ],
           zh: [
-            "**什麼時候用：**agent 喜歡跳過思考、直接動 code 時。Superpowers 不是單一 skill，是**一整套 skill pack** — 強迫 agent 走完每道 gate 才能說「做完了」：",
+            "當 agent 很容易跳過思考、直接動 code 時，可以用 Superpowers。它不是單一 skill，而是一整套 skill pack，會要求 agent 走完幾個 checkpoint 才能說做完。",
             {
               type: "list",
               items: [
-                "**brainstorm** → 先決定方向",
-                "**plan** → 把 diff 先寫出來",
-                "**TDD** → 先寫會失敗的測試",
-                "**debug** → 找 root cause，不是猜了就改",
-                "**review** → 對照 plan 檢查改動",
-                "**verify** → 證明它真的會動",
+                "`brainstorm` 先決定方向。",
+                "`plan` 先寫出預計怎麼改。",
+                "`TDD` 在風險夠高時先寫會失敗的測試。",
+                "`debug` 找 root cause，不是猜了就改。",
+                "`review` 對照 plan 檢查改動。",
+                "`verify` 證明結果真的能動。",
               ],
             },
-            "**安裝：**",
+            "安裝指令：",
             { type: "install", command: "npx skills add obra/superpowers" },
-            "**Prompt 範例 — 開發新功能：**",
+            "開發新功能 prompt：",
             {
               type: "list",
               items: [
                 "Use Superpowers to add a rate limiter to my API.",
               ],
             },
-            "**另一個範例 — 修 bug：**",
+            "修 bug prompt：",
             {
               type: "list",
               items: [
@@ -543,27 +543,27 @@ export const tools: Tool[] = [
         },
         body: {
           en: [
-            "**Use this when** you notice you've typed the same kind of instructions three times. Instead of re-explaining your process, **package it as a skill** the agent can install and follow consistently.",
-            "It scaffolds the standard folder:",
+            "Use skill-creator when you have typed the same instruction three times. Turn that process into a skill, then the agent can follow it without you re-explaining the whole routine.",
+            "It builds the standard skill folder for you.",
             {
               type: "list",
               items: [
-                "**`SKILL.md`** — when and how to use",
-                "**`scripts/`** — helper code",
-                "**`references/`** — longer docs",
-                "**`assets/`** — templates",
+                "`SKILL.md` explains when and how to use the skill.",
+                "`scripts/` holds helper code.",
+                "`references/` holds longer docs.",
+                "`assets/` holds templates.",
               ],
             },
-            "**Install:**",
+            "Install command:",
             { type: "install", command: "npx skills add anthropics/skills --skill skill-creator" },
-            "**Example prompt — package a writing format:**",
+            "Writing-format prompt:",
             {
               type: "list",
               items: [
                 "Use skill-creator to package my weekly update format: bullet points grouped by project, link to the PR, one-line outcome, no emojis.",
               ],
             },
-            "**Another prompt — package a review checklist:**",
+            "Review-checklist prompt:",
             {
               type: "list",
               items: [
@@ -572,27 +572,27 @@ export const tools: Tool[] = [
             },
           ],
           zh: [
-            "**什麼時候用：**當你發現自己第三次在貼類似的指示。不要再每次重講一次流程，**把它包成 skill**，agent 安裝後可以一直照做。",
+            "當你發現自己第三次在貼類似的指示，就可以用 skill-creator。不要每次重講整套流程，把它包成 skill，agent 之後就能照著做。",
             "它會幫你建好標準資料夾：",
             {
               type: "list",
               items: [
-                "**`SKILL.md`** — 什麼時候用、怎麼用",
-                "**`scripts/`** — 輔助 script",
-                "**`references/`** — 更長的文件",
-                "**`assets/`** — 範本",
+                "`SKILL.md` 說明什麼時候用、怎麼用。",
+                "`scripts/` 放輔助 script。",
+                "`references/` 放更長的文件。",
+                "`assets/` 放範本。",
               ],
             },
-            "**安裝：**",
+            "安裝指令：",
             { type: "install", command: "npx skills add anthropics/skills --skill skill-creator" },
-            "**Prompt 範例 — 封裝寫作格式：**",
+            "封裝寫作格式 prompt：",
             {
               type: "list",
               items: [
                 "Use skill-creator to package my weekly update format: bullet points grouped by project, link to the PR, one-line outcome, no emojis.",
               ],
             },
-            "**另一個範例 — 封裝 review checklist：**",
+            "封裝 review checklist prompt：",
             {
               type: "list",
               items: [
@@ -615,28 +615,28 @@ export const tools: Tool[] = [
         },
         body: {
           en: [
-            "The order is **memory → process → reuse**:",
+            "A practical order is memory, then process, then reuse.",
             {
               type: "list",
               items: [
-                "Start with **planning-with-files** so the agent has memory across resets.",
-                "Run the actual work under **Superpowers** so each phase has gates.",
-                "When you notice a workflow you've now done twice, end with **skill-creator** to make it reusable.",
+                "Start with `planning-with-files` so the agent keeps context across resets.",
+                "Run the work under `Superpowers` when quality gates matter.",
+                "After you repeat a workflow twice, use `skill-creator` to make it reusable.",
               ],
             },
-            "After installing these three, you spend **less time reminding the agent** and **more time reviewing the actual output**.",
+            "After installing these three, you spend less time reminding the agent what happened and more time reviewing the result.",
           ],
           zh: [
-            "順序就是 **memory → process → reuse**：",
+            "實際使用時，可以照 memory、process、reuse 的順序來：",
             {
               type: "list",
               items: [
-                "先用 **planning-with-files** 開頭，讓 agent 在 reset 之後還記得在做什麼。",
-                "中間實際做事時走 **Superpowers**，每個階段都有 gate 把關。",
-                "當你發現一個流程已經做過兩次，用 **skill-creator** 把它封裝起來，下次直接重用。",
+                "先用 `planning-with-files`，讓 agent 在 reset 之後還記得在做什麼。",
+                "品質要求比較高的工作，用 `Superpowers` 加上 checkpoint。",
+                "當一個流程已經重複做過兩次，用 `skill-creator` 把它封裝起來。",
               ],
             },
-            "裝完這三個之後，**提醒 agent 的時間變少**，**檢查實際產出的時間變多**。",
+            "裝完這三個之後，提醒 agent 的時間會變少，檢查實際產出的時間會變多。",
           ],
         },
       },
@@ -665,6 +665,186 @@ export const tools: Tool[] = [
       {
         label: "obra/superpowers on GitHub",
         href: "https://github.com/obra/superpowers",
+      },
+    ],
+  },
+  {
+    slug: "ai-pointer",
+    title: {
+      en: "AI Pointer: Try the Official Demos",
+      zh: "AI Pointer：官方 Demo 體驗",
+    },
+    kicker: {
+      en: "Point, ask, and act",
+      zh: "指向、提問、直接行動",
+    },
+    description: {
+      en: "Google's AI Pointer turns your cursor into a way to give AI context directly from the screen, without copying, pasting, or writing a long chatbot prompt.",
+      zh: "Google 的 AI Pointer 讓滑鼠游標變成提供畫面脈絡的方式，不用一直複製、貼上、開新分頁，也不用寫很長的 chatbot prompt。",
+    },
+    coverTitle: {
+      en: "AI\nPointer",
+      zh: "AI\nPointer",
+    },
+    keyword: "POINTER",
+    publishedAt: "2026-05-21",
+    hashtags: ["#AIPointer", "#Gemini", "#Googlebook"],
+    cover: "/tools/ai-pointer-cover.png",
+    accent: "indigo",
+    shareTitle: {
+      en: "Try AI Pointer here",
+      zh: "從這裡體驗 AI Pointer",
+    },
+    shareIntro: {
+      en: "Start with the two official demos. Create is for changing something on screen; Find is for pointing at visual information and asking AI to identify or locate it.",
+      zh: "先從兩個官方 demo 開始。Create 適合用來改變畫面中的內容；Find 適合指向畫面資訊，讓 AI 幫你辨識或尋找。",
+    },
+    shareLinks: [
+      {
+        label: "AI Pointer Create Demo",
+        href: "https://aistudio.google.com/apps/bundled/ai-pointer-create?showPreview=true&showAssistant=true&fullscreenApplet=true",
+      },
+      {
+        label: "AI Pointer Find Demo",
+        href: "https://aistudio.google.com/apps/bundled/ai-pointer-find?showPreview=true&showAssistant=true&fullscreenApplet=true",
+      },
+    ],
+    sections: [
+      {
+        heading: {
+          en: "What it is",
+          zh: "它是什麼",
+        },
+        body: {
+          en: [
+            "AI Pointer is a Google DeepMind experiment where the mouse pointer becomes part of the AI interface.",
+            "Instead of describing everything in a chat box, you point at the thing you mean, then ask for the action you want.",
+          ],
+          zh: [
+            "AI Pointer 是 Google DeepMind 的一個實驗，探索當滑鼠游標變成 AI 介面的一部分時，使用方式會怎麼改變。",
+            "你不需要把所有背景都打進聊天框，而是先指向你要處理的東西，再說你想讓 AI 做什麼。",
+          ],
+        },
+      },
+      {
+        heading: {
+          en: "Why it matters",
+          zh: "為什麼它重要",
+        },
+        body: {
+          en: [
+            "A lot of AI work today still feels like translating your screen into text. You copy something, open another tab, paste it into a chatbot, explain the context, write the prompt, then bring the answer back into the original workflow.",
+            "That works, but it adds friction exactly when you are already thinking. The tool is powerful, yet the interface keeps asking you to leave the place where the work is happening.",
+            "AI Pointer treats pointing as context. The cursor can say \"this thing, right here\" before you type the rest of the request. That moves AI closer to the work on screen instead of forcing every task through a separate chat window.",
+          ],
+          zh: [
+            "現在很多 AI 工作，其實都像是在把螢幕上的東西翻譯成文字。你要複製內容、開新分頁、貼到 chatbot、補一大段背景，最後再把結果搬回原本的工作流程。",
+            "這樣可以用，但它會在你正在思考時製造很多摩擦。AI 本身很強，可是介面一直要求你離開真正工作的地方。",
+            "AI Pointer 把「指向」本身當成脈絡。游標可以先替你說出「就是這個、這裡」，你再補上想做的事。這會讓 AI 更靠近螢幕上的工作，而不是把每個任務都丟進另一個聊天視窗。",
+          ],
+        },
+      },
+      {
+        heading: {
+          en: "Try the Create demo",
+          zh: "體驗 Create demo",
+        },
+        body: {
+          en: [
+            "Use Create when you want AI to modify or generate something based on the area you point at.",
+            "The demo already includes the on-screen instructions, so the easiest path is to open it, follow the built-in guide, and notice how little setup text you need compared with a normal chatbot workflow.",
+          ],
+          zh: [
+            "當你想讓 AI 根據你指向的區域修改或生成內容時，可以先試 Create。",
+            "這個 demo 裡已經有畫面指引，所以最簡單的方式就是直接打開、照著內建步驟操作，感受它比一般 chatbot 少掉多少前置說明。",
+          ],
+        },
+        links: [
+          {
+            label: "Open AI Pointer Create",
+            href: "https://aistudio.google.com/apps/bundled/ai-pointer-create?showPreview=true&showAssistant=true&fullscreenApplet=true",
+          },
+        ],
+      },
+      {
+        heading: {
+          en: "Try the Find demo",
+          zh: "體驗 Find demo",
+        },
+        body: {
+          en: [
+            "Use Find when you want AI to understand or locate something visual on the screen.",
+            "This is the side of AI Pointer that feels closest to search, but with the screen itself becoming the query instead of a typed description.",
+          ],
+          zh: [
+            "當你想讓 AI 理解或找出畫面中的某個視覺資訊時，可以先試 Find。",
+            "這一部分比較像搜尋，但差別是查詢條件不再只是你打出來的文字，而是螢幕本身也成為 query 的一部分。",
+          ],
+        },
+        links: [
+          {
+            label: "Open AI Pointer Find",
+            href: "https://aistudio.google.com/apps/bundled/ai-pointer-find?showPreview=true&showAssistant=true&fullscreenApplet=true",
+          },
+        ],
+      },
+      {
+        heading: {
+          en: "Googlebook note",
+          zh: "Googlebook 小補充",
+        },
+        body: {
+          en: [
+            "Google also mentioned a related Magic Pointer idea for Googlebook, where Gemini can offer contextual suggestions around what you point at.",
+            "That connects AI Pointer to a bigger product direction: if the pointer can carry context, AI does not always need a separate chat window.",
+          ],
+          zh: [
+            "Google 也在 Googlebook 介紹中提到相關的 Magic Pointer 概念，Gemini 可以根據你指向的內容提供情境建議。",
+            "這代表 AI Pointer 不只是單一 demo，而是跟 Google 更大的產品方向有關：如果游標能帶著脈絡，AI 不一定每次都需要獨立的聊天視窗。",
+          ],
+        },
+        links: [
+          {
+            label: "Meet Googlebook",
+            href: "https://blog.google/products-and-platforms/platforms/android/meet-googlebook/",
+          },
+        ],
+      },
+      {
+        heading: {
+          en: "What to watch for",
+          zh: "需要注意什麼",
+        },
+        body: {
+          en: [
+            "These are still experimental demos, not a finished everyday product.",
+            "You may need a Google account, and the demos can change as Google updates AI Studio.",
+            "If this kind of interface becomes common, the important questions will be privacy, screen permissions, app support, and how clearly the AI shows what part of the screen it is using as context.",
+          ],
+          zh: [
+            "目前這些仍然是實驗 demo，不是已經完成的日常產品。",
+            "你可能需要 Google 帳號，而且 demo 內容可能會隨著 AI Studio 更新而改變。",
+            "如果這種介面之後變得普遍，真正需要注意的是隱私、螢幕權限、支援哪些 app，以及 AI 是否清楚顯示它正在把畫面哪一部分當成脈絡。",
+          ],
+        },
+      },
+    ],
+    resources: [
+      {
+        label: "AI Pointer Create Demo",
+        href: "https://aistudio.google.com/apps/bundled/ai-pointer-create?showPreview=true&showAssistant=true&fullscreenApplet=true",
+      },
+      {
+        label: "AI Pointer Find Demo",
+        href: "https://aistudio.google.com/apps/bundled/ai-pointer-find?showPreview=true&showAssistant=true&fullscreenApplet=true",
+      },
+      {
+        label: "Google DeepMind: AI Pointer",
+        href: "https://deepmind.google/blog/ai-pointer/",
+      },
+      {
+        label: "Google: Meet Googlebook",
+        href: "https://blog.google/products-and-platforms/platforms/android/meet-googlebook/",
       },
     ],
   },

@@ -23,11 +23,11 @@ type PageProps = {
 
 const detailCopy = {
   en: {
-    back: "Back to tools",
+    back: "Back to resources",
     links: "Links",
   },
   zh: {
-    back: "回工具列表",
+    back: "回資源列表",
     links: "連結",
   },
 };
@@ -92,10 +92,10 @@ export default async function ToolPage({ params, searchParams }: PageProps) {
           </Link>
 
           <div>
-            <div className="relative mx-auto aspect-[9/16] w-full max-w-[360px] overflow-hidden border border-[#d8d0c3] bg-[#171411]">
+            <div className="relative aspect-[9/16] w-full max-w-[360px] overflow-hidden border border-[#d8d0c3] bg-[#171411]">
               <ToolCover tool={tool} locale={locale} priority />
             </div>
-            <div className="mx-auto max-w-[360px] space-y-4 pt-5">
+            <div className="max-w-[360px] space-y-4 pt-5">
               <div>
                 <h1 className="text-4xl font-semibold leading-tight">
                   {tool.title[locale]}

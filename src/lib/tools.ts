@@ -10,7 +10,16 @@ type LocalizedText = Record<Locale, string>;
 
 export type ContentBlock =
   | { type: "list"; items: string[] }
-  | { type: "install"; command: string; label?: string };
+  | { type: "install"; command: string; label?: string }
+  | { type: "terminal"; title?: string; lines: string[] }
+  | {
+      type: "image";
+      src: string;
+      alt: string;
+      width: number;
+      height: number;
+      caption?: string;
+    };
 
 export type BodyItem = string | ContentBlock;
 
@@ -28,7 +37,12 @@ export type Tool = {
   shareTitle: LocalizedText;
   shareIntro: LocalizedText;
   shareLinks?: ToolResource[];
+  toc?: {
+    label: LocalizedText;
+    href: string;
+  }[];
   sections: {
+    id?: string;
     heading: LocalizedText;
     body: Record<Locale, BodyItem[]>;
     links?: ToolResource[];
@@ -37,6 +51,528 @@ export type Tool = {
 };
 
 export const tools: Tool[] = [
+  {
+    slug: "free-claude-code",
+    title: {
+      en: "Free Claude Code: Setup Guide",
+      zh: "Free Claude Code 安裝設定攻略",
+    },
+    kicker: {
+      en: "Claude Code workflow, different model",
+      zh: "Claude Code 工作流，換成其他模型",
+    },
+    description: {
+      en: "Use the Claude Code workflow through a local proxy, then route it to Ollama, NVIDIA NIM, OpenRouter, or another provider.",
+      zh: "透過本地 proxy 保留 Claude Code 工作流，再把背後模型路由到 Ollama、NVIDIA NIM、OpenRouter 或其他 provider。",
+    },
+    coverTitle: {
+      en: "Free\nClaude Code",
+      zh: "Free\nClaude Code",
+    },
+    keyword: "FREE",
+    publishedAt: "2026-05-26",
+    hashtags: ["#ClaudeCode", "#Ollama", "#OpenRouter"],
+    cover: "/tools/free-claude-code-cover.png",
+    accent: "teal",
+    shareTitle: {
+      en: "Quick navigation",
+      zh: "快速導覽",
+    },
+    shareIntro: {
+      en: "Start with the install steps, pick one provider, then read the explanation after the setup is working.",
+      zh: "先照安裝設定步驟做，選一個 provider，等設定能跑之後再看後面的原理解釋。",
+    },
+    toc: [
+      {
+        label: { en: "Install Free Claude Code", zh: "安裝 Free Claude Code" },
+        href: "#install",
+      },
+      {
+        label: { en: "Start the proxy", zh: "啟動 proxy" },
+        href: "#proxy",
+      },
+      {
+        label: { en: "Pick one provider", zh: "選一個 provider" },
+        href: "#provider",
+      },
+      {
+        label: { en: "Ollama route", zh: "Ollama 路線" },
+        href: "#ollama",
+      },
+      {
+        label: { en: "NVIDIA NIM route", zh: "NVIDIA NIM 路線" },
+        href: "#nvidia",
+      },
+      {
+        label: { en: "OpenRouter route", zh: "OpenRouter 路線" },
+        href: "#openrouter",
+      },
+      {
+        label: { en: "Model Config", zh: "Model Config" },
+        href: "#model-config",
+      },
+      {
+        label: { en: "Final checklist", zh: "最後檢查清單" },
+        href: "#checklist",
+      },
+      {
+        label: { en: "How it works", zh: "它怎麼運作" },
+        href: "#how-it-works",
+      },
+    ],
+    sections: [
+      {
+        id: "install",
+        heading: {
+          en: "Step 1: Install Free Claude Code",
+          zh: "步驟 1：安裝 Free Claude Code",
+        },
+        body: {
+          en: [
+            "Install Claude Code first if you do not already have it. Then run the Free Claude Code installer from the [GitHub project](https://github.com/Alishahryar1/free-claude-code).",
+            {
+              type: "terminal",
+              title: "macOS / Linux",
+              lines: [
+                "$ curl -fsSL \"https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.sh?raw=1\" | sh",
+              ],
+            },
+            "On Windows, use the PowerShell installer instead.",
+            {
+              type: "terminal",
+              title: "Windows PowerShell",
+              lines: [
+                "PS> irm \"https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.ps1?raw=1\" | iex",
+              ],
+            },
+          ],
+          zh: [
+            "如果你還沒有 Claude Code，先安裝 Claude Code。接著執行 [GitHub 專案](https://github.com/Alishahryar1/free-claude-code) 提供的 Free Claude Code 安裝指令。",
+            {
+              type: "terminal",
+              title: "macOS / Linux",
+              lines: [
+                "$ curl -fsSL \"https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.sh?raw=1\" | sh",
+              ],
+            },
+            "Windows 使用 PowerShell 版本。",
+            {
+              type: "terminal",
+              title: "Windows PowerShell",
+              lines: [
+                "PS> irm \"https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.ps1?raw=1\" | iex",
+              ],
+            },
+          ],
+        },
+        links: [
+          {
+            label: "Free Claude Code GitHub",
+            href: "https://github.com/Alishahryar1/free-claude-code",
+          },
+        ],
+      },
+      {
+        id: "proxy",
+        heading: {
+          en: "Step 2: Start the local proxy",
+          zh: "步驟 2：啟動本地 proxy",
+        },
+        body: {
+          en: [
+            "Start the server and keep this terminal running while you use Claude Code.",
+            {
+              type: "terminal",
+              title: "Terminal",
+              lines: [
+                "$ fcc-server",
+              ],
+            },
+            "Open the [Admin UI](http://127.0.0.1:8082/admin) after the server starts. The port is usually `8082`, but use whatever your terminal shows if yours is different.",
+          ],
+          zh: [
+            "啟動 server，使用 Claude Code 時請保持這個 terminal 不要關掉。",
+            {
+              type: "terminal",
+              title: "Terminal",
+              lines: [
+                "$ fcc-server",
+              ],
+            },
+            "server 啟動後打開 [Admin UI](http://127.0.0.1:8082/admin)。通常是 `8082`，但如果你的 terminal 顯示不同 port，就以你的為準。",
+          ],
+        },
+      },
+      {
+        id: "provider",
+        heading: {
+          en: "Step 3: Pick one provider",
+          zh: "步驟 3：選一個 provider",
+        },
+        body: {
+          en: [
+            "Choose one route first. Do not configure all of them at the same time when you are just testing.",
+            {
+              type: "image",
+              src: "/tools/free-claude-code/admin-provider-config.png",
+              alt: "Free Claude Code Providers page showing API key and local base URL fields",
+              width: 1901,
+              height: 916,
+              caption: "Use this Providers page to paste API keys for hosted routes, or set the local base URL for local routes like Ollama.",
+            },
+            {
+              type: "list",
+              items: [
+                "Ollama: local route, no API bill, limited by your computer and model quality.",
+                "NVIDIA NIM: hosted route, API key required, good for testing free endpoint models.",
+                "OpenRouter: flexible cloud route, useful for trying free or cheap models.",
+              ],
+            },
+          ],
+          zh: [
+            "先選一條路線就好。第一次測試時不要同時設定全部 provider。",
+            {
+              type: "image",
+              src: "/tools/free-claude-code/admin-provider-config.png",
+              alt: "Free Claude Code Providers page showing API key and local base URL fields",
+              width: 1901,
+              height: 916,
+              caption: "在 Providers 頁貼上雲端 provider 的 API key，或填本地路線需要的 base URL，例如 Ollama。",
+            },
+            {
+              type: "list",
+              items: [
+                "Ollama：本地路線，沒有 API bill，但受限於你的電腦和模型品質。",
+                "NVIDIA NIM：雲端路線，需要 API key，適合測試 free endpoint models。",
+                "OpenRouter：彈性的雲端路線，適合找免費或便宜模型。",
+              ],
+            },
+          ],
+        },
+      },
+      {
+        id: "ollama",
+        heading: {
+          en: "Route A: Ollama",
+          zh: "路線 A：Ollama",
+        },
+        body: {
+          en: [
+            "This is the best route if your goal is no API bill. Open the [Ollama download page](https://ollama.com/download), choose the version for your operating system, then run a local model on your machine.",
+            {
+              type: "image",
+              src: "/tools/free-claude-code/ollama-download.png",
+              alt: "Ollama download page for macOS",
+              width: 597,
+              height: 495,
+              caption: "The screenshot shows the macOS option, but choose the tab that matches your own system.",
+            },
+            "Pull a model, then start Ollama.",
+            {
+              type: "terminal",
+              title: "Terminal",
+              lines: [
+                "$ ollama pull gemma4",
+                "$ ollama serve",
+              ],
+            },
+            "In the Admin UI, keep `OLLAMA_BASE_URL` as the Ollama server root. Do not add `/v1` at the end.",
+            "Then set `Default Model` to the Ollama model slug. Example: `ollama/gemma4`.",
+          ],
+          zh: [
+            "如果你的目標是沒有 API bill，這條路線最符合。打開 [Ollama 下載頁](https://ollama.com/download)，依照自己的作業系統選版本，然後在你的電腦上跑本地模型。",
+            {
+              type: "image",
+              src: "/tools/free-claude-code/ollama-download.png",
+              alt: "Ollama download page for macOS",
+              width: 597,
+              height: 495,
+              caption: "截圖是 macOS 選項，但實際請依照自己的系統選擇。",
+            },
+            "下載模型，然後啟動 Ollama。",
+            {
+              type: "terminal",
+              title: "Terminal",
+              lines: [
+                "$ ollama pull gemma4",
+                "$ ollama serve",
+              ],
+            },
+            "在 Admin UI 裡，`OLLAMA_BASE_URL` 保持 Ollama server root，不要在後面加 `/v1`。",
+            "接著把 `Default Model` 設成 Ollama model slug，例如 `ollama/gemma4`。",
+          ],
+        },
+        links: [
+          {
+            label: "Ollama Download",
+            href: "https://ollama.com/download",
+          },
+        ],
+      },
+      {
+        id: "nvidia",
+        heading: {
+          en: "Route B: NVIDIA NIM",
+          zh: "路線 B：NVIDIA NIM",
+        },
+        body: {
+          en: [
+            "Use this route if you want a hosted model and an API-key setup. Start by creating an [NVIDIA NIM API key](https://build.nvidia.com/settings/api-keys).",
+            {
+              type: "image",
+              src: "/tools/free-claude-code/nvidia-api-keys.png",
+              alt: "NVIDIA NIM API keys page",
+              width: 1608,
+              height: 532,
+              caption: "Create an API key, then paste it into the Admin UI provider setting.",
+            },
+            {
+              type: "image",
+              src: "/tools/free-claude-code/nvidia-models.png",
+              alt: "NVIDIA NIM free endpoint models page",
+              width: 1901,
+              height: 833,
+              caption: "Pick a free endpoint model, then use the matching `nvidia_nim/...` model slug.",
+            },
+            "Pick a model from the [NVIDIA free / preview endpoint list](https://build.nvidia.com/models?filters=nimType%3Anim_type_preview). Example model slug: `nvidia_nim/minimaxai/minimax-m2.7`.",
+          ],
+          zh: [
+            "如果你想用雲端模型和 API key 設定，可以走這條路線。先建立 [NVIDIA NIM API key](https://build.nvidia.com/settings/api-keys)。",
+            {
+              type: "image",
+              src: "/tools/free-claude-code/nvidia-api-keys.png",
+              alt: "NVIDIA NIM API keys page",
+              width: 1608,
+              height: 532,
+              caption: "先建立 API key，再貼到 Admin UI 的 provider 設定。",
+            },
+            {
+              type: "image",
+              src: "/tools/free-claude-code/nvidia-models.png",
+              alt: "NVIDIA NIM free endpoint models page",
+              width: 1901,
+              height: 833,
+              caption: "從 free endpoint 模型列表挑一個模型，再使用對應的 `nvidia_nim/...` model slug。",
+            },
+            "從 [NVIDIA free / preview endpoint 模型列表](https://build.nvidia.com/models?filters=nimType%3Anim_type_preview)挑一個模型。範例 model slug：`nvidia_nim/minimaxai/minimax-m2.7`。",
+          ],
+        },
+        links: [
+          {
+            label: "NVIDIA NIM API Keys",
+            href: "https://build.nvidia.com/settings/api-keys",
+          },
+          {
+            label: "NVIDIA NIM Free / Preview Models",
+            href: "https://build.nvidia.com/models?filters=nimType%3Anim_type_preview",
+          },
+        ],
+      },
+      {
+        id: "openrouter",
+        heading: {
+          en: "Route C: OpenRouter",
+          zh: "路線 C：OpenRouter",
+        },
+        body: {
+          en: [
+            "OpenRouter is the flexible cloud route. Create an [OpenRouter API key](https://openrouter.ai/workspaces/default/keys) if you want to test free or cheap models without running them locally.",
+            {
+              type: "image",
+              src: "/tools/free-claude-code/openrouter-keys.png",
+              alt: "OpenRouter API keys page",
+              width: 1302,
+              height: 434,
+              caption: "Create an API key, then paste it into `OPENROUTER_API_KEY`.",
+            },
+            {
+              type: "image",
+              src: "/tools/free-claude-code/openrouter-free-models.png",
+              alt: "OpenRouter free models collection",
+              width: 729,
+              height: 780,
+              caption: "Browse the free model list, then set `Default Model` to an `open_router/...` slug.",
+            },
+            "Browse [OpenRouter free models](https://openrouter.ai/collections/free-models). Example model slug: `open_router/z-ai/glm-4.5-air:free`.",
+          ],
+          zh: [
+            "OpenRouter 是比較彈性的雲端路線。如果你想測試免費或便宜模型、不想在本機跑模型，先建立 [OpenRouter API key](https://openrouter.ai/workspaces/default/keys)。",
+            {
+              type: "image",
+              src: "/tools/free-claude-code/openrouter-keys.png",
+              alt: "OpenRouter API keys page",
+              width: 1302,
+              height: 434,
+              caption: "建立 API key，然後貼到 `OPENROUTER_API_KEY`。",
+            },
+            {
+              type: "image",
+              src: "/tools/free-claude-code/openrouter-free-models.png",
+              alt: "OpenRouter free models collection",
+              width: 729,
+              height: 780,
+              caption: "從 free models 裡挑模型，再把 `Default Model` 設成 `open_router/...` slug。",
+            },
+            "可以從 [OpenRouter free models](https://openrouter.ai/collections/free-models) 挑模型。範例 model slug：`open_router/z-ai/glm-4.5-air:free`。",
+          ],
+        },
+        links: [
+          {
+            label: "OpenRouter API Keys",
+            href: "https://openrouter.ai/workspaces/default/keys",
+          },
+          {
+            label: "OpenRouter Free Models",
+            href: "https://openrouter.ai/collections/free-models",
+          },
+        ],
+      },
+      {
+        id: "model-config",
+        heading: {
+          en: "Step 4: Fill Model Config",
+          zh: "步驟 4：填寫 Model Config",
+        },
+        body: {
+          en: [
+            "For a normal setup, fill only `Default Model`. The Opus, Sonnet, and Haiku override fields are optional.",
+            {
+              type: "image",
+              src: "/tools/free-claude-code/model-config-annotated.png",
+              alt: "Free Claude Code Model Config with Default Model highlighted",
+              width: 1901,
+              height: 829,
+              caption: "Required: Default Model. Optional: tier overrides only if you want different models for different Claude model tiers.",
+            },
+            "After filling the model, click `Validate`, then click `Apply` if validation passes.",
+          ],
+          zh: [
+            "一般設定只要填 `Default Model`。Opus、Sonnet、Haiku override 都是進階選項，不是必填。",
+            {
+              type: "image",
+              src: "/tools/free-claude-code/model-config-annotated.png",
+              alt: "Free Claude Code Model Config with Default Model highlighted",
+              width: 1901,
+              height: 829,
+              caption: "必填：Default Model。選填：如果不同 Claude tier 要走不同模型，才需要填 override。",
+            },
+            "填完模型後先按 `Validate`，驗證通過再按 `Apply`。",
+          ],
+        },
+      },
+      {
+        id: "launch",
+        heading: {
+          en: "Step 5: Launch Claude Code through the proxy",
+          zh: "步驟 5：透過 proxy 啟動 Claude Code",
+        },
+        body: {
+          en: [
+            "Once the server is running and the model config is applied, launch Claude Code with the Free Claude Code wrapper.",
+            {
+              type: "terminal",
+              title: "Terminal",
+              lines: [
+                "$ fcc-claude",
+                "> Claude Code opens with the configured proxy",
+              ],
+            },
+          ],
+          zh: [
+            "當 server 正在跑，而且 model config 已經套用後，用 Free Claude Code wrapper 啟動 Claude Code。",
+            {
+              type: "terminal",
+              title: "Terminal",
+              lines: [
+                "$ fcc-claude",
+                "> Claude Code 會透過你設定好的 proxy 開啟",
+              ],
+            },
+          ],
+        },
+      },
+      {
+        id: "checklist",
+        heading: {
+          en: "Final checklist",
+          zh: "最後檢查清單",
+        },
+        body: {
+          en: [
+            {
+              type: "list",
+              items: [
+                "`fcc-server` is still running.",
+                "The Admin UI has your provider key or local base URL.",
+                "`Default Model` has the correct provider prefix.",
+                "`Validate` passes before you click `Apply`.",
+                "`fcc-claude` launches Claude Code through the proxy.",
+              ],
+            },
+            "If something fails, check the model slug first. Most setup mistakes are wrong provider prefix, wrong local URL, or a model that does not support the workflow you are trying to run.",
+          ],
+          zh: [
+            {
+              type: "list",
+              items: [
+                "`fcc-server` 還在跑。",
+                "Admin UI 已填 provider API key 或 local base URL。",
+                "`Default Model` 有正確的 provider prefix。",
+                "先按 `Validate` 通過，再按 `Apply`。",
+                "`fcc-claude` 能透過 proxy 啟動 Claude Code。",
+              ],
+            },
+            "如果失敗，先檢查 model slug。最常見問題是 provider prefix 錯、本地 URL 錯，或模型不支援你要跑的 Claude Code workflow。",
+          ],
+        },
+      },
+      {
+        id: "how-it-works",
+        heading: {
+          en: "What this is doing",
+          zh: "它背後在做什麼",
+        },
+        body: {
+          en: [
+            "Free Claude Code runs a local Anthropic-compatible proxy. Claude Code sends requests to that proxy, and the proxy routes those requests to the provider you configured.",
+            "That means you keep the Claude Code workflow, but the model behind it can be Ollama, NVIDIA NIM, OpenRouter, or another supported provider.",
+            "This does not give you Anthropic's Claude models for free. You are using the Claude Code interface with a different model behind it.",
+          ],
+          zh: [
+            "Free Claude Code 會跑一個本地 Anthropic-compatible proxy。Claude Code 把請求送到這個 proxy，再由 proxy 轉發到你設定的 provider。",
+            "所以你保留 Claude Code 的工作流，但背後模型可以是 Ollama、NVIDIA NIM、OpenRouter 或其他支援的 provider。",
+            "這不是免費取得 Anthropic 的 Claude 模型，而是用 Claude Code 介面搭配另一個模型。",
+          ],
+        },
+      },
+    ],
+    resources: [
+      {
+        label: "Free Claude Code GitHub",
+        href: "https://github.com/Alishahryar1/free-claude-code",
+      },
+      {
+        label: "Ollama Download",
+        href: "https://ollama.com/download",
+      },
+      {
+        label: "NVIDIA NIM API Keys",
+        href: "https://build.nvidia.com/settings/api-keys",
+      },
+      {
+        label: "NVIDIA NIM Free / Preview Models",
+        href: "https://build.nvidia.com/models?filters=nimType%3Anim_type_preview",
+      },
+      {
+        label: "OpenRouter API Keys",
+        href: "https://openrouter.ai/workspaces/default/keys",
+      },
+      {
+        label: "OpenRouter Free Models",
+        href: "https://openrouter.ai/collections/free-models",
+      },
+    ],
+  },
   {
     slug: "html-in-canvas",
     title: {

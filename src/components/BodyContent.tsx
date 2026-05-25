@@ -1,12 +1,14 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 
 import type { BodyItem } from "@/lib/tools";
 
 import { CopyableCommand } from "./CopyableCommand";
+import { CopyableTerminalBlock } from "./CopyableTerminalBlock";
 
 function renderInline(input: string): ReactNode[] {
   const nodes: ReactNode[] = [];
-  const regex = /(\*\*[^*]+\*\*|`[^`]+`)/g;
+  const regex = /(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*|`[^`]+`)/g;
   let lastIndex = 0;
   let key = 0;
   let match: RegExpExecArray | null;
@@ -16,7 +18,22 @@ function renderInline(input: string): ReactNode[] {
       nodes.push(input.slice(lastIndex, match.index));
     }
     const token = match[0];
-    if (token.startsWith("**")) {
+    if (token.startsWith("[")) {
+      const linkMatch = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+      if (linkMatch) {
+        nodes.push(
+          <a
+            key={`a-${key++}`}
+            href={linkMatch[2]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-[#8b332e] underline decoration-[#d8a7a0] underline-offset-4 transition hover:text-[#171411]"
+          >
+            {linkMatch[1]}
+          </a>,
+        );
+      }
+    } else if (token.startsWith("**")) {
       nodes.push(
         <strong key={`b-${key++}`} className="font-semibold text-[#171411]">
           {token.slice(2, -2)}
@@ -70,6 +87,42 @@ export function BodyContent({ items }: { items: BodyItem[] }) {
         }
         if (item.type === "install") {
           return <CopyableCommand key={index} command={item.command} />;
+        }
+        if (item.type === "terminal") {
+          return (
+            <CopyableTerminalBlock
+              key={index}
+              title={item.title}
+              lines={item.lines}
+            />
+          );
+        }
+        if (item.type === "image") {
+          return (
+            <figure key={index} className="space-y-2">
+              <a
+                href={item.src}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex justify-center overflow-hidden border border-[#d8d0c3] bg-[#f8f5ee]"
+              >
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  width={item.width}
+                  height={item.height}
+                  unoptimized
+                  className="h-auto max-w-full"
+                  sizes={`${item.width}px`}
+                />
+              </a>
+              {item.caption ? (
+                <figcaption className="text-sm leading-6 text-[#6d6459]">
+                  {renderInline(item.caption)}
+                </figcaption>
+              ) : null}
+            </figure>
+          );
         }
         return null;
       })}

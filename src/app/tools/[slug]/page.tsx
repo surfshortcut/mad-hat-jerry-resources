@@ -71,25 +71,27 @@ export default async function ToolPage({ params, searchParams }: PageProps) {
 
   return (
     <main className="min-h-screen bg-[#f8f5ee] text-[#171411]">
-      <div className="mx-auto grid w-full max-w-6xl gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:py-14">
+      <div className="mx-auto grid w-full max-w-6xl gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[360px_minmax(0,1fr)] lg:py-14">
         <aside className="space-y-5">
-          <Link
-            href={`/${langSuffix}`}
-            className="inline-flex h-10 items-center gap-2 border border-[#27231f] px-3 text-sm font-medium transition hover:bg-[#27231f] hover:text-white"
-          >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            {copy.back}
-          </Link>
-          <Link
-            href={
-              locale === "zh" ? `/tools/${tool.slug}` : `/tools/${tool.slug}?lang=zh`
-            }
-            className="ml-2 inline-flex h-10 items-center gap-2 border border-[#27231f] px-3 text-sm font-medium transition hover:bg-[#27231f] hover:text-white"
-            aria-label={locale === "zh" ? "Switch to English" : "切換中文"}
-          >
-            <Languages className="h-4 w-4" aria-hidden="true" />
-            {locale === "zh" ? "EN" : "中文"}
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href={`/${langSuffix}`}
+              className="inline-flex h-10 items-center gap-2 whitespace-nowrap border border-[#27231f] px-3 text-sm font-medium transition hover:bg-[#27231f] hover:text-white"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              {copy.back}
+            </Link>
+            <Link
+              href={
+                locale === "zh" ? `/tools/${tool.slug}` : `/tools/${tool.slug}?lang=zh`
+              }
+              className="inline-flex h-10 items-center gap-2 whitespace-nowrap border border-[#27231f] px-3 text-sm font-medium transition hover:bg-[#27231f] hover:text-white"
+              aria-label={locale === "zh" ? "Switch to English" : "切換中文"}
+            >
+              <Languages className="h-4 w-4" aria-hidden="true" />
+              {locale === "zh" ? "EN" : "中文"}
+            </Link>
+          </div>
 
           <div>
             <div className="relative aspect-[9/16] w-full max-w-[360px] overflow-hidden border border-[#d8d0c3] bg-[#171411]">
@@ -145,11 +147,28 @@ export default async function ToolPage({ params, searchParams }: PageProps) {
                 ))}
               </div>
             ) : null}
+            {tool.toc ? (
+              <nav className="mt-5 grid gap-2" aria-label="Page sections">
+                {tool.toc.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="group flex items-center justify-between gap-4 border border-[#d8d0c3] bg-[#f8f5ee] p-4 transition hover:border-[#27231f]"
+                  >
+                    <span className="font-medium">{item.label[locale]}</span>
+                    <span className="text-sm text-[#8b332e] transition group-hover:translate-x-1">
+                      →
+                    </span>
+                  </a>
+                ))}
+              </nav>
+            ) : null}
           </div>
 
           {tool.sections.map((section) => (
             <section
               key={section.heading.en}
+              id={section.id}
               className="py-7"
             >
               <h2 className="text-2xl font-semibold">

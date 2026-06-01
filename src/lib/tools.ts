@@ -52,6 +52,338 @@ export type Tool = {
 
 export const tools: Tool[] = [
   {
+    slug: "gsap-skills",
+    title: {
+      en: "GSAP AI Skills: Setup Guide",
+      zh: "GSAP AI Skills 安裝攻略",
+    },
+    kicker: {
+      en: "Official animation skills for AI agents",
+      zh: "給 AI agent 的官方動畫 skills",
+    },
+    description: {
+      en: "Install the official GSAP skills so Cursor, Claude Code, Codex, Windsurf, and other AI editors can write cleaner timelines, ScrollTrigger animations, React hooks, and plugin code.",
+      zh: "安裝官方 GSAP skills，讓 Cursor、Claude Code、Codex、Windsurf 等 AI 編輯器更會寫 timeline、ScrollTrigger、React hook 和 plugin 動畫程式。",
+    },
+    coverTitle: {
+      en: "GSAP\nAI Skills",
+      zh: "GSAP\nAI Skills",
+    },
+    keyword: "GSAP",
+    publishedAt: "2026-06-01",
+    hashtags: ["#GSAP", "#WebAnimation", "#AICoding"],
+    cover: "/tools/gsap-skills-cover.png",
+    accent: "teal",
+    shareTitle: {
+      en: "Start here",
+      zh: "從這裡開始",
+    },
+    shareIntro: {
+      en: "This guide is for the GSAP AI skills repo from the video, not just the normal GSAP animation library. Install it first, then use the prompt examples below to make your AI editor follow GSAP patterns.",
+      zh: "這篇是影片裡的 GSAP AI skills repo 攻略，不只是一般 GSAP 動畫函式庫介紹。先安裝，再用下面的 prompt 範例讓 AI 編輯器照 GSAP 正確模式寫動畫。",
+    },
+    shareLinks: [
+      {
+        label: "GSAP AI Skills GitHub",
+        href: "https://github.com/greensock/gsap-skills",
+      },
+      {
+        label: "GSAP Installation Docs",
+        href: "https://gsap.com/docs/v3/Installation",
+      },
+      {
+        label: "ScrollTrigger Docs",
+        href: "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      },
+    ],
+    sections: [
+      {
+        heading: {
+          en: "What it is",
+          zh: "它是什麼",
+        },
+        body: {
+          en: [
+            "GSAP AI Skills is an official GreenSock repo that teaches AI coding agents how to write GSAP correctly.",
+            "It covers core tweens, timelines, ScrollTrigger, plugins, React/Vue/Svelte usage, and performance patterns.",
+            "The important part: GSAP says the library and plugins are now free through the public `gsap` npm package, so you do not need a Club membership or private registry for the old paid plugins.",
+            {
+              type: "image",
+              src: "/tools/gsap-skills/repo-readme.png",
+              alt: "GSAP AI Skills GitHub README screenshot",
+              width: 922,
+              height: 797,
+              caption: "The repo is the official AI skills pack for GSAP animation patterns.",
+            },
+          ],
+          zh: [
+            "GSAP AI Skills 是 GreenSock 官方 repo，用來教 AI coding agent 正確寫 GSAP。",
+            "它涵蓋 core tweens、timelines、ScrollTrigger、plugins、React/Vue/Svelte 用法，以及效能模式。",
+            "重點是：GSAP 目前表示函式庫和 plugins 都可以透過公開的 `gsap` npm package 使用，不需要 Club membership 或 private registry。",
+            {
+              type: "image",
+              src: "/tools/gsap-skills/repo-readme.png",
+              alt: "GSAP AI Skills GitHub README screenshot",
+              width: 922,
+              height: 797,
+              caption: "這個 repo 是官方 GSAP animation patterns 的 AI skills pack。",
+            },
+          ],
+        },
+        links: [
+          {
+            label: "GSAP AI Skills GitHub",
+            href: "https://github.com/greensock/gsap-skills",
+          },
+        ],
+      },
+      {
+        heading: {
+          en: "Install the skills",
+          zh: "安裝 skills",
+        },
+        body: {
+          en: [
+            "For most AI editors, use the skills CLI installer.",
+            {
+              type: "terminal",
+              title: "Terminal",
+              lines: [
+                "$ npx skills add https://github.com/greensock/gsap-skills",
+              ],
+            },
+            "For Claude Code, the repo also lists the plugin marketplace command.",
+            {
+              type: "terminal",
+              title: "Claude Code",
+              lines: [
+                "$ /plugin marketplace add greensock/gsap-skills",
+              ],
+            },
+            "For Cursor, add it as a Remote Rule with `greensock/gsap-skills`, or use the `npx skills add` command above if your setup supports it.",
+          ],
+          zh: [
+            "大多數 AI 編輯器可以用 skills CLI 安裝。",
+            {
+              type: "terminal",
+              title: "Terminal",
+              lines: [
+                "$ npx skills add https://github.com/greensock/gsap-skills",
+              ],
+            },
+            "Claude Code 也可以用 repo 裡列出的 plugin marketplace 指令。",
+            {
+              type: "terminal",
+              title: "Claude Code",
+              lines: [
+                "$ /plugin marketplace add greensock/gsap-skills",
+              ],
+            },
+            "Cursor 可以把 `greensock/gsap-skills` 加成 Remote Rule；如果你的環境支援，也可以直接用上面的 `npx skills add`。",
+          ],
+        },
+        links: [
+          {
+            label: "GSAP AI Skills GitHub",
+            href: "https://github.com/greensock/gsap-skills",
+          },
+        ],
+      },
+      {
+        heading: {
+          en: "Use this prompt format",
+          zh: "用這個 prompt 格式",
+        },
+        body: {
+          en: [
+            "After installing the skills, do not just ask for a random animation. Tell the agent the stack, the elements, the motion order, and the constraints.",
+            {
+              type: "list",
+              items: [
+                "Stack: vanilla JS, React, Next.js, Vue, Svelte, Webflow, etc.",
+                "Target elements: hero title, cards, SVG path, product image, sections.",
+                "Motion style: entrance, scroll-linked, pinned section, hover/tap interaction, timeline sequence.",
+                "Constraints: mobile support, reduced motion, cleanup on unmount, no layout shift.",
+              ],
+            },
+            "Good starter prompt:",
+            {
+              type: "list",
+              items: [
+                "Use the GSAP skills. Build a scroll-triggered landing page animation in React. Use `useGSAP`, scoped refs, cleanup on unmount, `ScrollTrigger`, and transforms instead of layout properties. Keep it mobile-safe and include a reduced-motion fallback.",
+              ],
+            },
+          ],
+          zh: [
+            "安裝 skills 之後，不要只跟 AI 說「幫我做動畫」。你要告訴它技術棧、要動的元素、動畫順序和限制。",
+            {
+              type: "list",
+              items: [
+                "Stack：vanilla JS、React、Next.js、Vue、Svelte、Webflow 等。",
+                "Target elements：hero title、cards、SVG path、product image、sections。",
+                "Motion style：進場動畫、scroll-linked、pinned section、hover/tap interaction、timeline sequence。",
+                "Constraints：mobile support、reduced motion、unmount cleanup、不要 layout shift。",
+              ],
+            },
+            "可以直接用這個 prompt 開始：",
+            {
+              type: "list",
+              items: [
+                "Use the GSAP skills. Build a scroll-triggered landing page animation in React. Use `useGSAP`, scoped refs, cleanup on unmount, `ScrollTrigger`, and transforms instead of layout properties. Keep it mobile-safe and include a reduced-motion fallback.",
+              ],
+            },
+          ],
+        },
+      },
+      {
+        heading: {
+          en: "Install GSAP in a project",
+          zh: "在專案裡安裝 GSAP",
+        },
+        body: {
+          en: [
+            "The skills teach the AI how to write better GSAP code, but your actual web project still needs GSAP installed.",
+            {
+              type: "terminal",
+              title: "Terminal",
+              lines: [
+                "$ npm install gsap @gsap/react",
+              ],
+            },
+            "For ScrollTrigger, import and register the plugin once.",
+            {
+              type: "list",
+              items: [
+                "`import { gsap } from \"gsap\";`",
+                "`import { ScrollTrigger } from \"gsap/ScrollTrigger\";`",
+                "`gsap.registerPlugin(ScrollTrigger);`",
+              ],
+            },
+          ],
+          zh: [
+            "skills 是教 AI 寫出更好的 GSAP 程式，但你的網頁專案本身還是要安裝 GSAP。",
+            {
+              type: "terminal",
+              title: "Terminal",
+              lines: [
+                "$ npm install gsap @gsap/react",
+              ],
+            },
+            "如果要用 ScrollTrigger，記得 import 並註冊 plugin。",
+            {
+              type: "list",
+              items: [
+                "`import { gsap } from \"gsap\";`",
+                "`import { ScrollTrigger } from \"gsap/ScrollTrigger\";`",
+                "`gsap.registerPlugin(ScrollTrigger);`",
+              ],
+            },
+          ],
+        },
+        links: [
+          {
+            label: "GSAP Installation Docs",
+            href: "https://gsap.com/docs/v3/Installation",
+          },
+          {
+            label: "@gsap/react Docs",
+            href: "https://gsap.com/resources/React/",
+          },
+        ],
+      },
+      {
+        heading: {
+          en: "Three prompts to try",
+          zh: "三個可以直接試的 prompt",
+        },
+        body: {
+          en: [
+            "Hero entrance:",
+            {
+              type: "list",
+              items: [
+                "Use GSAP skills to animate this hero. Create a timeline where the headline fades up, the subtext follows with a small delay, and the CTA scales in. Use `autoAlpha`, `y`, `scale`, and `power2.out`. Avoid animating `top`, `left`, or layout properties.",
+              ],
+            },
+            "Scroll section:",
+            {
+              type: "list",
+              items: [
+                "Use GSAP ScrollTrigger to pin this section while three cards animate in sequence. Use a timeline with `scrub: true`, responsive start/end values, and call `ScrollTrigger.refresh()` after images load.",
+              ],
+            },
+            "React component:",
+            {
+              type: "list",
+              items: [
+                "Refactor this React animation to use `@gsap/react` and `useGSAP`. Scope selectors to the container ref, register plugins once, and make sure animations clean up when the component unmounts.",
+              ],
+            },
+          ],
+          zh: [
+            "Hero 進場動畫：",
+            {
+              type: "list",
+              items: [
+                "Use GSAP skills to animate this hero. Create a timeline where the headline fades up, the subtext follows with a small delay, and the CTA scales in. Use `autoAlpha`, `y`, `scale`, and `power2.out`. Avoid animating `top`, `left`, or layout properties.",
+              ],
+            },
+            "Scroll section：",
+            {
+              type: "list",
+              items: [
+                "Use GSAP ScrollTrigger to pin this section while three cards animate in sequence. Use a timeline with `scrub: true`, responsive start/end values, and call `ScrollTrigger.refresh()` after images load.",
+              ],
+            },
+            "React component：",
+            {
+              type: "list",
+              items: [
+                "Refactor this React animation to use `@gsap/react` and `useGSAP`. Scope selectors to the container ref, register plugins once, and make sure animations clean up when the component unmounts.",
+              ],
+            },
+          ],
+        },
+      },
+      {
+        heading: {
+          en: "What to watch for",
+          zh: "需要注意什麼",
+        },
+        body: {
+          en: [
+            "If the AI writes animation code that technically works but feels cheap, ask it to rebuild with a timeline instead of scattered `delay` values.",
+            "For React and Next.js, ask for `useGSAP`, scoped refs, and cleanup. Most broken GSAP-in-React code comes from global selectors or missing cleanup.",
+            "For performance, ask the AI to animate transforms and opacity, not layout properties like `top`, `left`, `width`, or `height` unless there is a specific reason.",
+          ],
+          zh: [
+            "如果 AI 寫出的動畫能動但很廉價，請它改用 timeline 重建，不要到處塞 `delay`。",
+            "React / Next.js 專案裡，要要求 `useGSAP`、scoped refs 和 cleanup。很多 GSAP-in-React 問題都來自 global selectors 或沒有清理。",
+            "效能方面，要求 AI 優先動畫 transforms 和 opacity，不要隨便動畫 `top`、`left`、`width`、`height` 這類 layout properties。",
+          ],
+        },
+      },
+    ],
+    resources: [
+      {
+        label: "GSAP AI Skills GitHub",
+        href: "https://github.com/greensock/gsap-skills",
+      },
+      {
+        label: "GSAP Installation Docs",
+        href: "https://gsap.com/docs/v3/Installation",
+      },
+      {
+        label: "ScrollTrigger Docs",
+        href: "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      },
+      {
+        label: "GSAP React Guide",
+        href: "https://gsap.com/resources/React/",
+      },
+    ],
+  },
+  {
     slug: "free-claude-code",
     title: {
       en: "Free Claude Code: Setup Guide",

@@ -6,19 +6,20 @@ import { Check, Copy } from "lucide-react";
 export function CopyableTerminalBlock({
   title = "Terminal",
   lines,
+  wrap = false,
 }: {
   title?: string;
   lines: string[];
+  wrap?: boolean;
 }) {
   const [copied, setCopied] = useState(false);
-  const copyText = useMemo(
-    () =>
-      lines
+  const copyText = useMemo(() => {
+    const commandText = lines
         .map((line) => line.match(/^(?:\$|PS>)\s+(.+)$/)?.[1])
         .filter(Boolean)
-        .join("\n"),
-    [lines],
-  );
+        .join("\n");
+    return commandText || lines.join("\n");
+  }, [lines]);
 
   const handleCopy = async () => {
     if (!copyText) return;
@@ -58,7 +59,11 @@ export function CopyableTerminalBlock({
           <span className="pr-4">local</span>
         )}
       </div>
-      <pre className="overflow-x-auto px-4 py-4 font-mono text-sm leading-7">
+      <pre
+        className={`px-4 py-4 font-mono text-sm leading-7 ${
+          wrap ? "whitespace-pre-wrap break-words" : "overflow-x-auto"
+        }`}
+      >
         {lines.join("\n")}
       </pre>
     </div>

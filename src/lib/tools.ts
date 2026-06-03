@@ -11,7 +11,21 @@ type LocalizedText = Record<Locale, string>;
 export type ContentBlock =
   | { type: "list"; items: string[] }
   | { type: "install"; command: string; label?: string }
-  | { type: "terminal"; title?: string; lines: string[] }
+  | { type: "terminal"; title?: string; lines: string[]; wrap?: boolean }
+  | {
+      type: "video";
+      src: string;
+      caption?: string;
+      poster?: string;
+    }
+  | {
+      type: "gallery";
+      items: {
+        src: string;
+        alt: string;
+        caption: string;
+      }[];
+    }
   | {
       type: "image";
       src: string;
@@ -36,6 +50,7 @@ export type Tool = {
   accent: string;
   shareTitle: LocalizedText;
   shareIntro: LocalizedText;
+  featuredMedia?: Record<Locale, BodyItem[]>;
   shareLinks?: ToolResource[];
   toc?: {
     label: LocalizedText;
@@ -51,6 +66,434 @@ export type Tool = {
 };
 
 export const tools: Tool[] = [
+  {
+    slug: "mini-model",
+    title: {
+      en: "AI Miniature Model Workflow",
+      zh: "AI 微縮模型動畫攻略",
+    },
+    kicker: {
+      en: "Image prompt, reverse collapse, and live scene animation",
+      zh: "圖片 prompt、倒放拆解、場景動態化",
+    },
+    description: {
+      en: "A practical workflow for creating isometric miniature architecture, turning it into a collapse animation, reversing the video, and adding subtle life to the scene.",
+      zh: "用 AI 生成等角微縮建築，再做倒塌動畫、倒放影片，最後幫微縮場景加入小車和人物動態。",
+    },
+    coverTitle: {
+      en: "Miniature\nModel AI",
+      zh: "微縮模型\nAI",
+    },
+    keyword: "MINI",
+    publishedAt: "2026-06-04",
+    hashtags: ["#AIVideo", "#MiniatureModel", "#GoogleFlow"],
+    cover: "/tools/mini-model-cover.png",
+    accent: "yellow",
+    shareTitle: {
+      en: "Start with the final result",
+      zh: "先看最後效果",
+    },
+    shareIntro: {
+      en: "This guide uses one theme to create a miniature model image, generate a collapse animation, reverse that clip into a build-up animation, and then make the surrounding scene feel alive.",
+      zh: "這篇會用一個主題先生成微縮模型圖，再做倒塌動畫，把影片倒放成建築生成效果，最後讓周圍的小車和人物動起來。",
+    },
+    featuredMedia: {
+      en: [
+        {
+          type: "video",
+          src: "/tools/mini-model/videos/mcdonalds-final.mp4",
+          poster: "/tools/mini-model/mcdonalds-final-poster.jpg",
+          caption: "Final McDonald's miniature model result.",
+        },
+      ],
+      zh: [
+        {
+          type: "video",
+          src: "/tools/mini-model/videos/mcdonalds-final.mp4",
+          poster: "/tools/mini-model/mcdonalds-final-poster.jpg",
+          caption: "最後完成的 McDonald's 微縮模型效果。",
+        },
+      ],
+    },
+    toc: [
+      {
+        label: {
+          en: "1. Generate the model",
+          zh: "1. 生成微縮模型",
+        },
+        href: "#step-1",
+      },
+      {
+        label: {
+          en: "2. Create the collapse clip",
+          zh: "2. 生成倒塌片段",
+        },
+        href: "#step-2",
+      },
+      {
+        label: {
+          en: "3. Bring the scene to life",
+          zh: "3. 讓場景活起來",
+        },
+        href: "#step-3",
+      },
+      {
+        label: {
+          en: "4. Summary workflow",
+          zh: "4. 總結流程",
+        },
+        href: "#summary",
+      },
+    ],
+    sections: [
+      {
+        id: "step-1",
+        heading: {
+          en: "Step 1: Generate the miniature model",
+          zh: "Step 1：生成微縮模型",
+        },
+        body: {
+          en: [
+            {
+              type: "terminal",
+              title: "Prompt",
+              wrap: true,
+              lines: [
+                "User Input Theme: McDonald's",
+                "",
+                "Based on the user's input [Theme/Brand/Model Name], generate a highly finished 45° top-down isometric miniature 3D architectural model poster.",
+                "",
+                "Visual Requirements",
+                "Perspective: -45° top-down isometric / axonometric",
+                "",
+                "Style: Miniature model feel, toy-like, clean, and centered composition",
+                "",
+                "Base: Small elevated pedestal holding the main building and minimal surrounding environment",
+                "",
+                "Details: Optional minimal elements like figures, greenery, tables, chairs, street signs, streets, and steps",
+                "",
+                "Characters: Cute and simplified figures with no facial details",
+                "",
+                "Aesthetic: Premium, restrained, and tidy, resembling a luxury brand display or design proposal",
+                "",
+                "Framing Requirements",
+                "Dimensions: Square composition, 1080x1080",
+                "",
+                "Layout: Perfectly centered layout",
+                "",
+                "Exclusions: No complex backgrounds, cluttered decorations, over-realism, or messy streetscapes",
+                "",
+                "Output Goal",
+                "Create a premium visual combining:",
+                "- a white background",
+                "- authentic brand color system",
+                "- high-end architectural model texture",
+                "- miniature isometric architecture",
+                "",
+                "Ideal for brand showcases, conceptual proposals, social media covers, or series creation.",
+              ],
+            },
+            "Replace `McDonald's` with your own theme or brand name. Keep it specific enough for the model to understand the building type, but avoid adding too many side details.",
+            {
+              type: "gallery",
+              items: [
+                {
+                  src: "/tools/mini-model/building/mcdonalds.jpeg",
+                  alt: "McDonald's miniature model",
+                  caption: "Input theme: McDonald's",
+                },
+                {
+                  src: "/tools/mini-model/building/police-station.jpeg",
+                  alt: "Police station miniature model",
+                  caption: "Input theme: Police Station",
+                },
+                {
+                  src: "/tools/mini-model/building/cafe.jpeg",
+                  alt: "Cafe miniature model",
+                  caption: "Input theme: Cafe",
+                },
+                {
+                  src: "/tools/mini-model/building/tech-head.jpeg",
+                  alt: "Tech head miniature model",
+                  caption: "Input theme: Tech Head",
+                },
+              ],
+            },
+            "The result from this step becomes your start frame for the next two video prompts.",
+          ],
+          zh: [
+            {
+              type: "terminal",
+              title: "Prompt",
+              wrap: true,
+              lines: [
+                "User Input Theme: McDonald's",
+                "",
+                "Based on the user's input [Theme/Brand/Model Name], generate a highly finished 45° top-down isometric miniature 3D architectural model poster.",
+                "",
+                "Visual Requirements",
+                "Perspective: -45° top-down isometric / axonometric",
+                "",
+                "Style: Miniature model feel, toy-like, clean, and centered composition",
+                "",
+                "Base: Small elevated pedestal holding the main building and minimal surrounding environment",
+                "",
+                "Details: Optional minimal elements like figures, greenery, tables, chairs, street signs, streets, and steps",
+                "",
+                "Characters: Cute and simplified figures with no facial details",
+                "",
+                "Aesthetic: Premium, restrained, and tidy, resembling a luxury brand display or design proposal",
+                "",
+                "Framing Requirements",
+                "Dimensions: Square composition, 1080x1080",
+                "",
+                "Layout: Perfectly centered layout",
+                "",
+                "Exclusions: No complex backgrounds, cluttered decorations, over-realism, or messy streetscapes",
+                "",
+                "Output Goal",
+                "Create a premium visual combining:",
+                "- a white background",
+                "- authentic brand color system",
+                "- high-end architectural model texture",
+                "- miniature isometric architecture",
+                "",
+                "Ideal for brand showcases, conceptual proposals, social media covers, or series creation.",
+              ],
+            },
+            "把 `McDonald's` 換成你自己的主題或品牌名稱。主題要夠明確，讓模型知道建築類型；但不要一次塞太多周邊元素。",
+            {
+              type: "gallery",
+              items: [
+                {
+                  src: "/tools/mini-model/building/mcdonalds.jpeg",
+                  alt: "McDonald's miniature model",
+                  caption: "Input theme: McDonald's",
+                },
+                {
+                  src: "/tools/mini-model/building/police-station.jpeg",
+                  alt: "Police station miniature model",
+                  caption: "Input theme: Police Station",
+                },
+                {
+                  src: "/tools/mini-model/building/cafe.jpeg",
+                  alt: "Cafe miniature model",
+                  caption: "Input theme: Cafe",
+                },
+                {
+                  src: "/tools/mini-model/building/tech-head.jpeg",
+                  alt: "Tech head miniature model",
+                  caption: "Input theme: Tech Head",
+                },
+              ],
+            },
+            "這一步產出的圖片，就是後面兩種影片 prompt 的 start frame。",
+          ],
+        },
+      },
+      {
+        id: "step-2",
+        heading: {
+          en: "Step 2: Create the collapse clip, then reverse it",
+          zh: "Step 2：先生成倒塌，再倒放影片",
+        },
+        body: {
+          en: [
+            {
+              type: "terminal",
+              title: "Prompt",
+              wrap: true,
+              lines: [
+                "0-1s:",
+                "The animation begins with the complete miniature model exactly as shown in the start frame.",
+                "The camera smoothly and slightly pulls back as the deconstruction process initiates.",
+                "",
+                "1-2s:",
+                "All lighting elements, interior glows, and material reflections visible on the structure gradually dim and power off completely.",
+                "Fine textures lose their brightness.",
+                "",
+                "2-3s:",
+                "All secondary standalone objects, peripheral props, and environmental elements strictly present in the start frame rapidly shrink, pop down, and disappear into the ground.",
+                "Absolutely no new assets are generated.",
+                "",
+                "3-4s:",
+                "Rooftop structures, facade attachments, and external decorative components fold away and retract into the main core.",
+                "The overall layered composition becomes flatter.",
+                "",
+                "4-5s:",
+                "The main architectural body, including its walls, structural pillars, and primary frames, smoothly disassembles from top to bottom.",
+                "It collapses and flattens completely into the base foundation.",
+                "",
+                "5-6s:",
+                "All ground markings, surface textures, and layout lines automatically fold backward and vanish into the foundation.",
+                "The video seamlessly ends with only the empty, clean, light gray isometric platform matching the end frame.",
+              ],
+            },
+            "Google Flow is not always good at this kind of first-frame / last-frame transformation. If you put the finished building as the last frame, it may generate a totally unrelated building first, then suddenly jump to your miniature model.",
+            "The workaround is to do the motion backwards: generate the complete miniature model collapsing into a clean base, then reverse the video. The reversed version becomes the smooth build-up animation you actually want.",
+            {
+              type: "video",
+              src: "/tools/mini-model/videos/mcdonalds-forward.mp4",
+              poster: "/tools/mini-model/mcdonalds-forward-poster.jpg",
+              caption: "mcdonalds_forward: the generated collapse clip before reversing.",
+            },
+            {
+              type: "video",
+              src: "/tools/mini-model/videos/mcdonalds-backward.mp4",
+              poster: "/tools/mini-model/mcdonalds-backward-poster.jpg",
+              caption: "mcdonalds_backward: the reversed clip. This is the version we use as the final build-up animation.",
+            },
+          ],
+          zh: [
+            {
+              type: "terminal",
+              title: "Prompt",
+              wrap: true,
+              lines: [
+                "0-1s:",
+                "The animation begins with the complete miniature model exactly as shown in the start frame.",
+                "The camera smoothly and slightly pulls back as the deconstruction process initiates.",
+                "",
+                "1-2s:",
+                "All lighting elements, interior glows, and material reflections visible on the structure gradually dim and power off completely.",
+                "Fine textures lose their brightness.",
+                "",
+                "2-3s:",
+                "All secondary standalone objects, peripheral props, and environmental elements strictly present in the start frame rapidly shrink, pop down, and disappear into the ground.",
+                "Absolutely no new assets are generated.",
+                "",
+                "3-4s:",
+                "Rooftop structures, facade attachments, and external decorative components fold away and retract into the main core.",
+                "The overall layered composition becomes flatter.",
+                "",
+                "4-5s:",
+                "The main architectural body, including its walls, structural pillars, and primary frames, smoothly disassembles from top to bottom.",
+                "It collapses and flattens completely into the base foundation.",
+                "",
+                "5-6s:",
+                "All ground markings, surface textures, and layout lines automatically fold backward and vanish into the foundation.",
+                "The video seamlessly ends with only the empty, clean, light gray isometric platform matching the end frame.",
+              ],
+            },
+            "Google Flow 對這種首幀 / 尾幀轉換不一定穩。如果你把完整建築放在尾幀，它可能先生成一個完全不相關的建築，最後才突然跳到你的微縮模型。",
+            "所以這裡反過來做：先讓完整微縮模型倒塌成乾淨平台，再把影片倒放。倒放後才會變成我們真正想要的「建築生成」效果。",
+            {
+              type: "video",
+              src: "/tools/mini-model/videos/mcdonalds-forward.mp4",
+              poster: "/tools/mini-model/mcdonalds-forward-poster.jpg",
+              caption: "mcdonalds_forward：倒放前的倒塌片段。",
+            },
+            {
+              type: "video",
+              src: "/tools/mini-model/videos/mcdonalds-backward.mp4",
+              poster: "/tools/mini-model/mcdonalds-backward-poster.jpg",
+              caption: "mcdonalds_backward：倒放後的版本，這才是最後要使用的建築生成動畫。",
+            },
+          ],
+        },
+      },
+      {
+        id: "step-3",
+        heading: {
+          en: "Step 3: Bring the miniature scene to life",
+          zh: "Step 3：讓微縮場景活起來",
+        },
+        body: {
+          en: [
+            {
+              type: "terminal",
+              title: "Prompt",
+              wrap: true,
+              lines: [
+                "Camera:",
+                "Completely static camera.",
+                "Maintains the exact fixed isometric 3/4 perspective from the start frame with zero camera movement.",
+                "",
+                "Environment:",
+                "The building, signs, trees, and roads remain perfectly still and stationary.",
+                "",
+                "Animation:",
+                "Tiny miniature cars drive smoothly along the dark gray roads and move through the drive-thru lane.",
+                "The minimal figures (people) walk subtly around the outdoor seating tables and across the crosswalks.",
+                "Smooth, seamless, toy-like animation loop.",
+              ],
+            },
+            "This version keeps the camera and building locked. Only the small elements move, so the scene feels like a premium toy model instead of a messy AI video.",
+            {
+              type: "video",
+              src: "/tools/mini-model/videos/mcdonalds-live.mp4",
+              poster: "/tools/mini-model/mcdonalds-live-poster.jpg",
+              caption: "mcdonalds_live: small cars and figures animate while the miniature building stays still.",
+            },
+          ],
+          zh: [
+            {
+              type: "terminal",
+              title: "Prompt",
+              wrap: true,
+              lines: [
+                "Camera:",
+                "Completely static camera.",
+                "Maintains the exact fixed isometric 3/4 perspective from the start frame with zero camera movement.",
+                "",
+                "Environment:",
+                "The building, signs, trees, and roads remain perfectly still and stationary.",
+                "",
+                "Animation:",
+                "Tiny miniature cars drive smoothly along the dark gray roads and move through the drive-thru lane.",
+                "The minimal figures (people) walk subtly around the outdoor seating tables and across the crosswalks.",
+                "Smooth, seamless, toy-like animation loop.",
+              ],
+            },
+            "這個版本要鎖住鏡頭和建築，只讓小元素動。這樣畫面會像高級玩具模型活起來，而不是變成混亂的 AI 影片。",
+            {
+              type: "video",
+              src: "/tools/mini-model/videos/mcdonalds-live.mp4",
+              poster: "/tools/mini-model/mcdonalds-live-poster.jpg",
+              caption: "mcdonalds_live：小車和人物在動，但微縮建築保持不動。",
+            },
+          ],
+        },
+      },
+      {
+        id: "summary",
+        heading: {
+          en: "Summary workflow",
+          zh: "總結流程",
+        },
+        body: {
+          en: [
+            {
+              type: "list",
+              items: [
+                "Generate the miniature model image from one clear theme.",
+                "Use first-frame / last-frame generation to create the collapse version.",
+                "Reverse the collapse video to turn it into a build-up animation.",
+                "Use the live-scene prompt to add subtle cars and people movement to the miniature model.",
+              ],
+            },
+          ],
+          zh: [
+            {
+              type: "list",
+              items: [
+                "用一個明確主題生成微縮模型圖片。",
+                "用首幀 / 尾幀生成倒塌版本。",
+                "把倒塌影片倒放，變成建築生成動畫。",
+                "再用 live-scene prompt 替微縮模型加入小車和人物動態。",
+              ],
+            },
+          ],
+        },
+      },
+    ],
+    resources: [
+      {
+        label: "Google Flow",
+        href: "https://labs.google/fx/tools/flow",
+      },
+    ],
+  },
   {
     slug: "gsap-skills",
     title: {

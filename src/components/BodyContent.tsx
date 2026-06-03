@@ -94,7 +94,58 @@ export function BodyContent({ items }: { items: BodyItem[] }) {
               key={index}
               title={item.title}
               lines={item.lines}
+              wrap={item.wrap}
             />
+          );
+        }
+        if (item.type === "video") {
+          return (
+            <figure key={index} className="space-y-2">
+              <div className="flex justify-center overflow-hidden border border-[#d8d0c3] bg-[#171411]">
+                <video
+                  src={item.src}
+                  poster={item.poster}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="h-auto w-full"
+                />
+              </div>
+              {item.caption ? (
+                <figcaption className="text-sm leading-6 text-[#6d6459]">
+                  {renderInline(item.caption)}
+                </figcaption>
+              ) : null}
+            </figure>
+          );
+        }
+        if (item.type === "gallery") {
+          return (
+            <div key={index} className="grid gap-4 sm:grid-cols-2">
+              {item.items.map((galleryItem) => (
+                <figure key={galleryItem.src} className="space-y-2">
+                  <a
+                    href={galleryItem.src}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block overflow-hidden border border-[#d8d0c3] bg-[#f8f5ee]"
+                  >
+                    <Image
+                      src={galleryItem.src}
+                      alt={galleryItem.alt}
+                      width={1024}
+                      height={1024}
+                      unoptimized
+                      className="aspect-square h-auto w-full object-cover"
+                      sizes="(min-width: 640px) 50vw, 100vw"
+                    />
+                  </a>
+                  <figcaption className="text-sm leading-6 text-[#6d6459]">
+                    {renderInline(galleryItem.caption)}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           );
         }
         if (item.type === "image") {

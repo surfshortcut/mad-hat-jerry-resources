@@ -119,6 +119,9 @@ export default async function ToolPage({ params, searchParams }: PageProps) {
             <p className="mt-4 text-lg leading-8 text-[#5f574e]">
               {tool.shareIntro[locale]}
             </p>
+            {tool.featuredMedia ? (
+              <BodyContent items={tool.featuredMedia[locale]} />
+            ) : null}
             {tool.shareLinks ? (
               <div className="mt-5 grid gap-3">
                 {tool.shareLinks.map((resource) => (

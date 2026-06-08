@@ -19,6 +19,12 @@ export type ContentBlock =
       poster?: string;
     }
   | {
+      type: "embed";
+      src: string;
+      title: string;
+      caption?: string;
+    }
+  | {
       type: "gallery";
       items: {
         src: string;
@@ -66,6 +72,506 @@ export type Tool = {
 };
 
 export const tools: Tool[] = [
+  {
+    slug: "css-joystick-button",
+    title: {
+      en: "Pure CSS Joystick Button",
+      zh: "純 CSS 搖桿按鈕攻略",
+    },
+    kicker: {
+      en: "Fake 3D with gradients, shadows, and flat layers",
+      zh: "用漸層、陰影和平面層做出假 3D",
+    },
+    description: {
+      en: "Build a draggable analog joystick UI with HTML, CSS, SVG arrows, and a small amount of JavaScript. No Canvas or WebGL required.",
+      zh: "用 HTML、CSS、SVG 箭頭和少量 JavaScript 做出可拖曳的類比搖桿 UI，不需要 Canvas 或 WebGL。",
+    },
+    coverTitle: {
+      en: "CSS\nJoystick",
+      zh: "CSS\n搖桿",
+    },
+    keyword: "JOYSTICK",
+    publishedAt: "2026-06-08",
+    hashtags: ["#CSS", "#UIDesign", "#Frontend"],
+    cover: "/tools/css-joystick-button-cover.png",
+    accent: "teal",
+    shareTitle: {
+      en: "Try the joystick here",
+      zh: "直接在這裡試搖桿",
+    },
+    shareIntro: {
+      en: "This joystick looks like a tiny 3D object, but it is built from flat HTML layers. The depth comes from gradients, inset shadows, outer shadows, SVG arrows, and pointer-driven CSS variables.",
+      zh: "這個搖桿看起來像小型 3D 元件，但實際上是平面的 HTML layer 疊出來的。立體感來自漸層、內陰影、外陰影、SVG 箭頭，以及由滑鼠/觸控控制的 CSS 變數。",
+    },
+    featuredMedia: {
+      en: [
+        {
+          type: "embed",
+          src: "/tools/css-joystick-button/joystick-embed.html",
+          title: "Pure CSS joystick interactive demo",
+          caption: "Drag the center knob or press the arrows. This is the actual component, not a video preview.",
+        },
+      ],
+      zh: [
+        {
+          type: "embed",
+          src: "/tools/css-joystick-button/joystick-embed.html",
+          title: "Pure CSS joystick interactive demo",
+          caption: "拖曳中間的蘑菇頭，或直接按四個方向鍵。這是實際元件，不是影片預覽。",
+        },
+      ],
+    },
+    shareLinks: [
+      {
+        label: "Open Demo + Code",
+        href: "/tools/css-joystick-button/joystick-demo.html",
+      },
+    ],
+    toc: [
+      {
+        label: {
+          en: "1. What you are building",
+          zh: "1. 你要做出什麼",
+        },
+        href: "#what-you-build",
+      },
+      {
+        label: {
+          en: "2. Copy the structure",
+          zh: "2. 複製 HTML 結構",
+        },
+        href: "#structure",
+      },
+      {
+        label: {
+          en: "3. Build the fake depth",
+          zh: "3. 做出假 3D 深度",
+        },
+        href: "#depth",
+      },
+      {
+        label: {
+          en: "4. Add arrows and details",
+          zh: "4. 加上箭頭與細節",
+        },
+        href: "#details",
+      },
+      {
+        label: {
+          en: "5. Make it draggable",
+          zh: "5. 做成可拖曳",
+        },
+        href: "#drag",
+      },
+      {
+        label: {
+          en: "6. What to tweak",
+          zh: "6. 可以調整的地方",
+        },
+        href: "#tweak",
+      },
+      {
+        label: {
+          en: "7. Credits",
+          zh: "7. 感謝來源",
+        },
+        href: "#credits",
+      },
+    ],
+    sections: [
+      {
+        id: "what-you-build",
+        heading: {
+          en: "What you are building",
+          zh: "你要做出什麼",
+        },
+        body: {
+          en: [
+            "You are building a draggable analog joystick UI. It looks raised, recessed, and touchable, but the whole visual is made from flat circles.",
+            "There is no Canvas, no WebGL, and no image texture. The component is made from five visual layers: outer ring, dark socket, inner base, mushroom head, and top details.",
+            "Open the [demo + code page](/tools/css-joystick-button/joystick-demo.html) if you want a larger preview with the complete standalone HTML underneath.",
+          ],
+          zh: [
+            "你要做的是一個可以拖曳的 analog joystick UI。它看起來有凸起、有凹槽、像可以被按壓，但整個視覺其實都是平面圓形疊出來的。",
+            "這裡沒有 Canvas、沒有 WebGL、也沒有用圖片貼圖。核心是五個視覺 layer：外圈、暗色凹槽、內層底座、蘑菇頭、頂部細節。",
+            "如果你想看更大的版本和完整 HTML，可以打開 [demo + code page](/tools/css-joystick-button/joystick-demo.html)。",
+          ],
+        },
+      },
+      {
+        id: "structure",
+        heading: {
+          en: "Copy the structure",
+          zh: "複製 HTML 結構",
+        },
+        body: {
+          en: [
+            "The structure is intentionally simple. Four real buttons sit around the joystick, and the center is a nested stack of circles.",
+            {
+              type: "terminal",
+              title: "HTML",
+              wrap: true,
+              lines: [
+                "<button class=\"control top\" aria-label=\"Move up\">...</button>",
+                "<button class=\"control right\" aria-label=\"Move right\">...</button>",
+                "<button class=\"control bottom\" aria-label=\"Move down\">...</button>",
+                "<button class=\"control left\" aria-label=\"Move left\">...</button>",
+                "",
+                "<div class=\"around\">",
+                "  <div class=\"handle\">",
+                "    <div class=\"button-wrapper\">",
+                "      <span class=\"inside\">",
+                "        <span class=\"dot\"></span>",
+                "        <span class=\"dot\"></span>",
+                "        <span class=\"dot\"></span>",
+                "        <span class=\"dot\"></span>",
+                "      </span>",
+                "    </div>",
+                "  </div>",
+                "</div>",
+              ],
+            },
+            "The four `button.control` elements should stay as actual buttons. That makes the directional controls easier to wire up and better for accessibility.",
+            "`around::before` adds one extra visual circle without adding another HTML element. That pseudo-element becomes the dark recessed socket.",
+          ],
+          zh: [
+            "HTML 結構刻意保持簡單。四個方向是實際的 button，中間則是幾個圓形 layer 疊在一起。",
+            {
+              type: "terminal",
+              title: "HTML",
+              wrap: true,
+              lines: [
+                "<button class=\"control top\" aria-label=\"Move up\">...</button>",
+                "<button class=\"control right\" aria-label=\"Move right\">...</button>",
+                "<button class=\"control bottom\" aria-label=\"Move down\">...</button>",
+                "<button class=\"control left\" aria-label=\"Move left\">...</button>",
+                "",
+                "<div class=\"around\">",
+                "  <div class=\"handle\">",
+                "    <div class=\"button-wrapper\">",
+                "      <span class=\"inside\">",
+                "        <span class=\"dot\"></span>",
+                "        <span class=\"dot\"></span>",
+                "        <span class=\"dot\"></span>",
+                "        <span class=\"dot\"></span>",
+                "      </span>",
+                "    </div>",
+                "  </div>",
+                "</div>",
+              ],
+            },
+            "四個 `button.control` 建議保留成真的 button。這樣後面要接方向控制更直覺，也比較符合 accessibility。",
+            "`around::before` 會額外補出一個視覺圓形，不需要再多寫一層 HTML。這個 pseudo-element 會變成中間的暗色凹槽。",
+          ],
+        },
+        links: [
+          {
+            label: "Open Demo + Code",
+            href: "/tools/css-joystick-button/joystick-demo.html",
+          },
+        ],
+      },
+      {
+        id: "depth",
+        heading: {
+          en: "Build the fake depth",
+          zh: "做出假 3D 深度",
+        },
+        body: {
+          en: [
+            "The depth is not one trick. It is a small system of highlights and shadows.",
+            {
+              type: "list",
+              items: [
+                "`.around` uses a top-to-bottom gradient to create the outer bevel.",
+                "`.around::before` darkens the center so it reads as a socket.",
+                "`.handle` gives the inner base a bright top and a darker lower edge.",
+                "`.button-wrapper` carries the mushroom head and the strongest floating shadow.",
+                "`.inside` adds the top face, inset highlight, and small dot details.",
+              ],
+            },
+            {
+              type: "terminal",
+              title: "Core CSS Depth",
+              wrap: true,
+              lines: [
+                ".around {",
+                "  background-image: linear-gradient(0deg, #f5f8fa, #9da4a8);",
+                "}",
+                "",
+                ".button-wrapper {",
+                "  background-image: linear-gradient(180deg, #adb9bf, #d4dbdd);",
+                "  box-shadow:",
+                "    0 -12px 10px rgba(255, 255, 255, 0.5),",
+                "    0 9px 14px rgba(0, 0, 0, 0.5),",
+                "    inset 0 10px 13px rgba(255, 255, 255, 0.72),",
+                "    inset 0 -14px 18px rgba(86, 101, 108, 0.44);",
+                "}",
+              ],
+            },
+            "The important idea: highlights should sit on the top side, and heavier shadows should sit below the object. Once that direction is consistent, the flat circles start to feel physical.",
+            "The mushroom head needs a tight lower shadow; without it, the joystick looks pasted on instead of raised. The top face needs inset highlights and a soft lower inset shadow to sell the thickness.",
+          ],
+          zh: [
+            "這個立體感不是靠單一技巧，而是一整套高光與陰影的組合。",
+            {
+              type: "list",
+              items: [
+                "`.around` 用上下漸層做出外圈斜面。",
+                "`.around::before` 把中心壓暗，讓它看起來像凹槽。",
+                "`.handle` 讓內層底座有上亮下暗的厚度。",
+                "`.button-wrapper` 是蘑菇頭，也是最強浮起陰影的地方。",
+                "`.inside` 負責頂面、內部高光和小圓點細節。",
+              ],
+            },
+            {
+              type: "terminal",
+              title: "Core CSS Depth",
+              wrap: true,
+              lines: [
+                ".around {",
+                "  background-image: linear-gradient(0deg, #f5f8fa, #9da4a8);",
+                "}",
+                "",
+                ".button-wrapper {",
+                "  background-image: linear-gradient(180deg, #adb9bf, #d4dbdd);",
+                "  box-shadow:",
+                "    0 -12px 10px rgba(255, 255, 255, 0.5),",
+                "    0 9px 14px rgba(0, 0, 0, 0.5),",
+                "    inset 0 10px 13px rgba(255, 255, 255, 0.72),",
+                "    inset 0 -14px 18px rgba(86, 101, 108, 0.44);",
+                "}",
+              ],
+            },
+            "關鍵概念是：高光要在上方，重一點的陰影要在物件下方。只要光源方向一致，平面的圓形就會開始有物理感。",
+            "蘑菇頭下方一定要有貼近的陰影；沒有這層，它會像貼上去的圖，而不是浮起來的按鈕。頂面則用內部高光和底部內陰影來暗示厚度。",
+          ],
+        },
+      },
+      {
+        id: "details",
+        heading: {
+          en: "Add arrows and details",
+          zh: "加上箭頭與細節",
+        },
+        body: {
+          en: [
+            "Once the depth works, add the directional arrows and four small dots. These are small details, but they make the control feel intentional instead of decorative.",
+            "Use SVG for the arrows so they stay sharp at any size. Keep each arrow inside a button and update its active color based on direction.",
+            {
+              type: "list",
+              items: [
+                "Idle arrows: neutral gray.",
+                "Pressed direction: warm active color.",
+                "Diagonal drag: two arrows can be active at different intensities.",
+                "Dots: subtle, low-contrast, and slightly inset.",
+              ],
+            },
+            "Direction states should respond to the actual joystick vector, not just hard-coded button clicks.",
+          ],
+          zh: [
+            "立體感成立之後，再加方向箭頭和四個小圓點。這些細節很小，但會讓它從裝飾圖案變成真正像控制器的 UI。",
+            "箭頭建議用 SVG，這樣任何尺寸都清楚。每個箭頭外層保留 button，再根據方向更新 active 顏色。",
+            {
+              type: "list",
+              items: [
+                "閒置箭頭：中性灰色。",
+                "按下方向：變成暖色 active 狀態。",
+                "斜向拖曳：兩個方向可以同時亮起，並依照力道有深淺。",
+                "小圓點：低對比、微微內凹，不要搶主視覺。",
+              ],
+            },
+            "方向狀態最好根據 joystick vector 更新，不要只做固定的 button active 切換。",
+          ],
+        },
+      },
+      {
+        id: "drag",
+        heading: {
+          en: "Make it draggable",
+          zh: "做成可拖曳",
+        },
+        body: {
+          en: [
+            "JavaScript does not need to draw the joystick. It only needs to read pointer position, convert it into an `x` and `y` vector, clamp that vector inside a circle, then write CSS variables.",
+            {
+              type: "terminal",
+              title: "Movement CSS",
+              wrap: true,
+              lines: [
+                ".button-wrapper {",
+                "  transform: translate(var(--joy-x), var(--joy-y)) scale(var(--joy-scale));",
+                "}",
+                "",
+                ".handle {",
+                "  background:",
+                "    radial-gradient(circle at calc(50% + var(--well-light-x)) calc(42% + var(--well-light-y)), ...),",
+                "    radial-gradient(circle at calc(50% + var(--well-dark-x)) calc(58% + var(--well-dark-y)), ...),",
+                "    linear-gradient(...);",
+                "}",
+              ],
+            },
+            {
+              type: "terminal",
+              title: "Direction Vector",
+              wrap: true,
+              lines: [
+                "setJoystick(x, y);",
+                "",
+                "// x and y should stay between -1 and 1.",
+                "// Clamp the drag distance to a circular range before writing CSS variables.",
+              ],
+            },
+            "Use the vector to decide how strong each arrow should look:",
+            {
+              type: "list",
+              items: [
+                "Up: `Math.max(0, -y)`",
+                "Right: `Math.max(0, x)`",
+                "Down: `Math.max(0, y)`",
+                "Left: `Math.max(0, -x)`",
+              ],
+            },
+            "When the knob moves, update the socket lighting and the knob shadow together. That is what makes the drag feel believable.",
+          ],
+          zh: [
+            "JavaScript 不需要負責畫出搖桿。它只要讀取 pointer 位置，把它轉成 `x` 和 `y` 向量，限制在圓形範圍內，再寫入 CSS 變數即可。",
+            {
+              type: "terminal",
+              title: "Movement CSS",
+              wrap: true,
+              lines: [
+                ".button-wrapper {",
+                "  transform: translate(var(--joy-x), var(--joy-y)) scale(var(--joy-scale));",
+                "}",
+                "",
+                ".handle {",
+                "  background:",
+                "    radial-gradient(circle at calc(50% + var(--well-light-x)) calc(42% + var(--well-light-y)), ...),",
+                "    radial-gradient(circle at calc(50% + var(--well-dark-x)) calc(58% + var(--well-dark-y)), ...),",
+                "    linear-gradient(...);",
+                "}",
+              ],
+            },
+            {
+              type: "terminal",
+              title: "Direction Vector",
+              wrap: true,
+              lines: [
+                "setJoystick(x, y);",
+                "",
+                "// x and y should stay between -1 and 1.",
+                "// Clamp the drag distance to a circular range before writing CSS variables.",
+              ],
+            },
+            "接著用向量決定每個箭頭要亮多深：",
+            {
+              type: "list",
+              items: [
+                "上：`Math.max(0, -y)`",
+                "右：`Math.max(0, x)`",
+                "下：`Math.max(0, y)`",
+                "左：`Math.max(0, -x)`",
+              ],
+            },
+            "蘑菇頭移動時，底座凹槽的光影和蘑菇頭陰影要同步變化，拖曳感才會可信。",
+          ],
+        },
+      },
+      {
+        id: "tweak",
+        heading: {
+          en: "What to tweak",
+          zh: "可以調整的地方",
+        },
+        body: {
+          en: [
+            "After the demo works, tweak these parts first:",
+            {
+              type: "list",
+              items: [
+                "Size: change the wrapper dimensions and keep all inner circles proportional.",
+                "Depth: adjust shadow offset and blur before changing colors.",
+                "Movement: reduce the drag radius if the knob feels too loose.",
+                "Active color: change the arrow color to match your UI theme.",
+                "Touch feel: use `transform`, not `left` or `top`, so the motion stays smooth.",
+                "Accessibility: keep the directional controls as real buttons with labels.",
+              ],
+            },
+            "Common mistakes: making every shadow too soft, mixing light directions, using a screenshot as a texture, or turning the arrows into decoration instead of controls.",
+          ],
+          zh: [
+            "demo 跑起來後，可以先調這些地方：",
+            {
+              type: "list",
+              items: [
+                "尺寸：調整外層尺寸，並讓內部圓形等比例縮放。",
+                "深度：先調 shadow offset 和 blur，再改顏色。",
+                "移動感：如果蘑菇頭太鬆，就縮小 drag radius。",
+                "Active color：把箭頭亮起顏色換成你的 UI 主色。",
+                "觸控手感：用 `transform`，不要用 `left` 或 `top`，動畫會更順。",
+                "Accessibility：方向控制保留成有 label 的真 button。",
+              ],
+            },
+            "常見錯誤：所有陰影都太糊、光源方向不一致、用截圖當貼圖，或是把箭頭做成純裝飾而不是控制元件。",
+          ],
+        },
+      },
+      {
+        id: "credits",
+        heading: {
+          en: "Credits",
+          zh: "感謝來源",
+        },
+        body: {
+          en: [
+            "Thanks to the original visual references behind this recreation.",
+            {
+              type: "list",
+              items: [
+                "Button visual design reference: [Pinterest source](https://za.pinterest.com/pin/637611259733805125/)",
+                "Joystick breakdown reference: [original Douyin video](https://www.douyin.com/video/7639656582095097122)",
+              ],
+            },
+          ],
+          zh: [
+            "感謝這次復刻背後的原始視覺與拆解參考。",
+            {
+              type: "list",
+              items: [
+                "按鈕視覺設計來源：[Pinterest source](https://za.pinterest.com/pin/637611259733805125/)",
+                "Joystick 拆解參考：[original Douyin video](https://www.douyin.com/video/7639656582095097122)",
+              ],
+            },
+          ],
+        },
+        links: [
+          {
+            label: "Button Design Source",
+            href: "https://za.pinterest.com/pin/637611259733805125/",
+          },
+          {
+            label: "Original Joystick Breakdown",
+            href: "https://www.douyin.com/video/7639656582095097122",
+          },
+        ],
+      },
+    ],
+    resources: [
+      {
+        label: "Open Demo + Code",
+        href: "/tools/css-joystick-button/joystick-demo.html",
+      },
+      {
+        label: "Button Design Source",
+        href: "https://za.pinterest.com/pin/637611259733805125/",
+      },
+      {
+        label: "Original Joystick Breakdown",
+        href: "https://www.douyin.com/video/7639656582095097122",
+      },
+    ],
+  },
   {
     slug: "moneyprinterturbo",
     title: {

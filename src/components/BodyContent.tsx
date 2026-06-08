@@ -119,6 +119,26 @@ export function BodyContent({ items }: { items: BodyItem[] }) {
             </figure>
           );
         }
+        if (item.type === "embed") {
+          return (
+            <figure key={index} className="space-y-2">
+              <div className="aspect-square overflow-hidden border border-[#d8d0c3] bg-[#dfe7eb]">
+                <iframe
+                  src={item.src}
+                  title={item.title}
+                  loading="lazy"
+                  scrolling="no"
+                  className="block h-full w-full border-0"
+                />
+              </div>
+              {item.caption ? (
+                <figcaption className="text-sm leading-6 text-[#6d6459]">
+                  {renderInline(item.caption)}
+                </figcaption>
+              ) : null}
+            </figure>
+          );
+        }
         if (item.type === "gallery") {
           return (
             <div key={index} className="grid gap-4 sm:grid-cols-2">

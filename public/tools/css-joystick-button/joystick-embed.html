@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pure CSS Analog Stick Button</title>
+    <style>
+      :root {
+        --page: #dfe7eb;
+        --orange: #c48645;
+        --muted: #aab4b9;
+        --size: min(46vmin, 310px);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      body {
+        margin: 0;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.72), transparent 36%),
+          linear-gradient(180deg, #eef3f5 0%, var(--page) 58%, #d2dde2 100%);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .demo {
+        --joy-x: 0px;
+        --joy-y: 0px;
+        --joy-scale: 1;
+        --highlight-x: 0px;
+        --highlight-y: -10px;
+        --shadow-x: 0px;
+        --shadow-y: 9px;
+        --soft-shadow-x: 0px;
+        --soft-shadow-y: 19px;
+        --well-light-x: 0px;
+        --well-light-y: -5px;
+        --well-dark-x: 0px;
+        --well-dark-y: 10px;
+        --groove-dark-x: 0px;
+        --groove-dark-y: -18px;
+        --groove-light-x: 0px;
+        --groove-light-y: 18px;
+        position: relative;
+        width: calc(var(--size) * 1.8);
+        height: calc(var(--size) * 1.8);
+        display: grid;
+        place-items: center;
+      }
+
+      .demo-title {
+        position: absolute;
+        top: 4%;
+        left: 4%;
+        z-index: 4;
+        pointer-events: none;
+        color: #171411;
+        font-size: clamp(0.9rem, 3vmin, 1.35rem);
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        line-height: 1;
+        text-transform: uppercase;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
+      }
+
+      .control {
+        appearance: none;
+        border: 0;
+        padding: 0;
+        position: absolute;
+        width: 22%;
+        aspect-ratio: 1;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: var(--arrow-color, var(--muted));
+        background: transparent;
+        opacity: var(--arrow-opacity, 0.56);
+        cursor: pointer;
+        touch-action: manipulation;
+        z-index: 3;
+        transition: color 80ms linear, opacity 80ms linear, transform 140ms ease;
+      }
+
+      .control svg {
+        width: 54%;
+        filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.8));
+        pointer-events: none;
+      }
+
+      .control.top {
+        top: 5%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .control.right {
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%) rotate(90deg);
+      }
+
+      .control.bottom {
+        bottom: 5%;
+        left: 50%;
+        transform: translateX(-50%) rotate(180deg);
+      }
+
+      .control.left {
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%) rotate(-90deg);
+      }
+
+      .control.top:active {
+        transform: translateX(-50%) translateY(-4px);
+      }
+
+      .control.right:active {
+        transform: translateY(-50%) rotate(90deg) translateY(-4px);
+      }
+
+      .control.bottom:active {
+        transform: translateX(-50%) rotate(180deg) translateY(-4px);
+      }
+
+      .control.left:active {
+        transform: translateY(-50%) rotate(-90deg) translateY(-4px);
+      }
+
+      .control:focus-visible {
+        outline: 2px solid rgba(196, 134, 69, 0.55);
+        outline-offset: 5px;
+      }
+
+      .around {
+        position: relative;
+        width: var(--size);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background-image: linear-gradient(0deg, #f5f8fa, #9da4a8);
+        box-shadow:
+          0 24px 30px rgba(76, 91, 98, 0.16),
+          inset 0 14px 18px rgba(255, 255, 255, 0.5),
+          inset 0 -14px 24px rgba(78, 89, 94, 0.22);
+      }
+
+      .around::before {
+        content: "";
+        position: absolute;
+        inset: 16%;
+        border-radius: inherit;
+        background:
+          radial-gradient(
+            circle at calc(50% + var(--groove-dark-x)) calc(48% + var(--groove-dark-y)),
+            rgba(34, 45, 48, 0.58) 0 12%,
+            rgba(62, 73, 76, 0.45) 22%,
+            transparent 45%
+          ),
+          radial-gradient(
+            circle at calc(50% + var(--groove-light-x)) calc(58% + var(--groove-light-y)),
+            rgba(255, 255, 255, 0.98) 0 16%,
+            rgba(235, 244, 247, 0.72) 30%,
+            transparent 54%
+          ),
+          linear-gradient(180deg, #778287, #d4dde1 50%, #f3f8f9 100%);
+        box-shadow:
+          inset 0 18px 22px rgba(0, 0, 0, 0.56),
+          inset 0 -24px 26px rgba(255, 255, 255, 0.86),
+          0 15px 24px rgba(255, 255, 255, 0.84);
+      }
+
+      .handle {
+        position: relative;
+        z-index: 1;
+        width: 68%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(
+            circle at calc(50% + var(--well-light-x)) calc(42% + var(--well-light-y)),
+            rgba(255, 255, 255, 0.92) 0 14%,
+            rgba(232, 242, 246, 0.68) 27%,
+            transparent 48%
+          ),
+          radial-gradient(
+            circle at calc(50% + var(--well-dark-x)) calc(58% + var(--well-dark-y)),
+            rgba(23, 32, 35, 0.62) 0 18%,
+            rgba(55, 67, 70, 0.5) 32%,
+            transparent 58%
+          ),
+          linear-gradient(180deg, #f2fafc 0%, #b3c0c5 48%, #4e5b5e 100%);
+        box-shadow:
+          inset 0 18px 20px rgba(255, 255, 255, 0.9),
+          inset 0 -22px 24px rgba(0, 0, 0, 0.42),
+          0 18px 30px rgba(0, 0, 0, 0.34);
+      }
+
+      .button-wrapper {
+        cursor: grab;
+        position: relative;
+        z-index: 2;
+        width: 70%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background-image: linear-gradient(180deg, #adb9bf, #d4dbdd);
+        transform: translate(var(--joy-x), var(--joy-y)) scale(var(--joy-scale));
+        box-shadow:
+          var(--highlight-x) var(--highlight-y) 10px rgba(255, 255, 255, 0.56),
+          var(--shadow-x) var(--shadow-y) 15px rgba(0, 0, 0, 0.56),
+          var(--soft-shadow-x) var(--soft-shadow-y) 9px -2px rgba(0, 0, 0, 0.24),
+          0 34px 9px rgba(0, 0, 0, 0.05),
+          inset 0 11px 13px rgba(255, 255, 255, 0.78),
+          inset 0 -15px 18px rgba(62, 76, 82, 0.5);
+        transition: transform 120ms ease, box-shadow 120ms ease;
+        touch-action: none;
+      }
+
+      .button-wrapper:active,
+      .button-wrapper:focus-visible {
+        outline: none;
+      }
+
+      .demo.is-dragging .button-wrapper {
+        cursor: grabbing;
+        transition: none;
+      }
+
+      .inside {
+        position: relative;
+        width: 76%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background-image: linear-gradient(180deg, #c7d2d6 0%, #d8e0e3 100%);
+        box-shadow:
+          inset 0 8px 0 rgba(255, 255, 255, 0.58),
+          inset 0 -8px 0 rgba(141, 155, 161, 0.36),
+          0 1px 0 rgba(255, 255, 255, 0.8);
+      }
+
+      .dot {
+        position: absolute;
+        width: 11%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: linear-gradient(180deg, #f6fbfc, #a9b6bc);
+        box-shadow:
+          inset 0 2px 2px rgba(255, 255, 255, 0.9),
+          0 2px 4px rgba(68, 80, 86, 0.42);
+      }
+
+      .dot:nth-child(1) {
+        top: 9%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .dot:nth-child(2) {
+        top: 50%;
+        right: 10%;
+        transform: translateY(-50%);
+      }
+
+      .dot:nth-child(3) {
+        bottom: 9%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .dot:nth-child(4) {
+        top: 50%;
+        left: 10%;
+        transform: translateY(-50%);
+      }
+
+      @media (max-width: 640px) {
+        :root {
+          --size: min(48vmin, 285px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="demo" aria-label="Pure CSS analog stick button">
+      <strong class="demo-title">Drag &amp; Try</strong>
+      <button class="control top" type="button" aria-label="Up" data-direction="up">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M11 30 24 18l13 12" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button class="control right" type="button" aria-label="Right" data-direction="right">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M11 30 24 18l13 12" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button class="control bottom" type="button" aria-label="Down" data-direction="down">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M11 30 24 18l13 12" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button class="control left" type="button" aria-label="Left" data-direction="left">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M11 30 24 18l13 12" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+
+      <div class="around">
+        <div class="handle">
+          <div class="button-wrapper" role="application" aria-label="Analog joystick" tabindex="0">
+            <span class="inside">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      const demo = document.querySelector(".demo");
+      const around = document.querySelector(".around");
+      const knob = document.querySelector(".button-wrapper");
+      const controls = [...document.querySelectorAll(".control")];
+      const arrowByDirection = Object.fromEntries(controls.map((button) => [button.dataset.direction, button]));
+
+      const muted = [170, 180, 185];
+      const orange = [196, 134, 69];
+      const vectors = {
+        up: [0, -1],
+        right: [1, 0],
+        down: [0, 1],
+        left: [-1, 0],
+      };
+
+      let activePointer = null;
+
+      function mixColor(depth) {
+        const amount = Math.max(0, Math.min(1, depth));
+        const rgb = muted.map((channel, index) => Math.round(channel + (orange[index] - channel) * amount));
+        return `rgb(${rgb.join(", ")})`;
+      }
+
+      function setArrowDepth(direction, depth) {
+        const arrow = arrowByDirection[direction];
+        arrow.style.setProperty("--arrow-color", mixColor(depth));
+        arrow.style.setProperty("--arrow-opacity", String(0.56 + depth * 0.44));
+      }
+
+      function setJoystick(x, y) {
+        const distance = Math.min(1, Math.hypot(x, y));
+        const maxTravel = Math.min(30, around.getBoundingClientRect().width * 0.09);
+        const px = x * maxTravel;
+        const py = y * maxTravel;
+
+        demo.style.setProperty("--joy-x", `${px.toFixed(2)}px`);
+        demo.style.setProperty("--joy-y", `${py.toFixed(2)}px`);
+        demo.style.setProperty("--joy-scale", String(1 - distance * 0.018));
+        demo.style.setProperty("--highlight-x", `${(-x * 7).toFixed(2)}px`);
+        demo.style.setProperty("--highlight-y", `${(-10 - y * 4).toFixed(2)}px`);
+        demo.style.setProperty("--shadow-x", `${(-x * 8).toFixed(2)}px`);
+        demo.style.setProperty("--shadow-y", `${(9 - y * 5).toFixed(2)}px`);
+        demo.style.setProperty("--soft-shadow-x", `${(-x * 14).toFixed(2)}px`);
+        demo.style.setProperty("--soft-shadow-y", `${(19 - y * 6).toFixed(2)}px`);
+        demo.style.setProperty("--well-light-x", `${(x * 5).toFixed(2)}px`);
+        demo.style.setProperty("--well-light-y", `${(-5 + y * 3).toFixed(2)}px`);
+        demo.style.setProperty("--well-dark-x", `${(-x * 10).toFixed(2)}px`);
+        demo.style.setProperty("--well-dark-y", `${(10 - y * 8).toFixed(2)}px`);
+        demo.style.setProperty("--groove-dark-x", `${(-x * 6).toFixed(2)}px`);
+        demo.style.setProperty("--groove-dark-y", `${(-18 - y * 5).toFixed(2)}px`);
+        demo.style.setProperty("--groove-light-x", `${(x * 5).toFixed(2)}px`);
+        demo.style.setProperty("--groove-light-y", `${(18 + y * 5).toFixed(2)}px`);
+
+        setArrowDepth("up", Math.max(0, -y));
+        setArrowDepth("right", Math.max(0, x));
+        setArrowDepth("down", Math.max(0, y));
+        setArrowDepth("left", Math.max(0, -x));
+      }
+
+      function resetJoystick() {
+        demo.classList.remove("is-dragging");
+        activePointer = null;
+        setJoystick(0, 0);
+      }
+
+      function setFromPointer(event) {
+        const rect = around.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const maxDistance = rect.width * 0.22;
+        let x = (event.clientX - centerX) / maxDistance;
+        let y = (event.clientY - centerY) / maxDistance;
+        const distance = Math.hypot(x, y);
+
+        if (distance > 1) {
+          x /= distance;
+          y /= distance;
+        }
+
+        setJoystick(x, y);
+      }
+
+      knob.addEventListener("pointerdown", (event) => {
+        activePointer = event.pointerId;
+        demo.classList.add("is-dragging");
+        knob.setPointerCapture(event.pointerId);
+        setFromPointer(event);
+      });
+
+      knob.addEventListener("pointermove", (event) => {
+        if (event.pointerId !== activePointer) return;
+        setFromPointer(event);
+      });
+
+      knob.addEventListener("pointerup", resetJoystick);
+      knob.addEventListener("pointercancel", resetJoystick);
+
+      controls.forEach((button) => {
+        button.addEventListener("pointerdown", (event) => {
+          const [x, y] = vectors[button.dataset.direction];
+          activePointer = event.pointerId;
+          button.setPointerCapture(event.pointerId);
+          setJoystick(x, y);
+        });
+
+        button.addEventListener("pointerup", resetJoystick);
+        button.addEventListener("pointercancel", resetJoystick);
+      });
+
+      knob.addEventListener("keydown", (event) => {
+        const keyMap = {
+          ArrowUp: "up",
+          ArrowRight: "right",
+          ArrowDown: "down",
+          ArrowLeft: "left",
+        };
+
+        if (!keyMap[event.key]) return;
+        event.preventDefault();
+        const [x, y] = vectors[keyMap[event.key]];
+        setJoystick(x, y);
+      });
+
+      knob.addEventListener("keyup", (event) => {
+        if (event.key.startsWith("Arrow")) resetJoystick();
+      });
+    </script>
+  </body>
+</html>

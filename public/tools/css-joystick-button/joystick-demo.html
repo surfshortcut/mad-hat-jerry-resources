@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pure CSS Joystick Button Demo + Code</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #171411;
+        --muted: #625a51;
+        --paper: #f8f5ee;
+        --line: #d8d0c3;
+        --panel: #ffffff;
+        --accent: #8b332e;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      main {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 32px 0 48px;
+      }
+
+      header {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2rem, 6vw, 4.75rem);
+        line-height: 0.95;
+        letter-spacing: 0;
+      }
+
+      p {
+        max-width: 760px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+
+      .demo-frame {
+        width: min(680px, 100%);
+        aspect-ratio: 1;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: #dfe7eb;
+      }
+
+      iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      .code-panel {
+        margin-top: 20px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+      }
+
+      .code-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        border-bottom: 1px solid var(--line);
+        padding: 12px 14px;
+      }
+
+      .code-bar span {
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      button {
+        appearance: none;
+        border: 1px solid var(--ink);
+        background: transparent;
+        color: var(--ink);
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.82rem;
+        font-weight: 700;
+        padding: 8px 11px;
+        transition:
+          background 140ms ease,
+          color 140ms ease;
+      }
+
+      button:hover {
+        background: var(--ink);
+        color: #fff;
+      }
+
+      pre {
+        max-height: 720px;
+        margin: 0;
+        overflow: auto;
+        background: #171411;
+        color: #e8edf2;
+        font-family:
+          ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          Monaco,
+          Consolas,
+          "Liberation Mono",
+          monospace;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        padding: 18px;
+        white-space: pre;
+      }
+
+      .token-comment {
+        color: #7f8a94;
+        font-style: italic;
+      }
+
+      .token-tag,
+      .token-keyword {
+        color: #f08d73;
+      }
+
+      .token-attr,
+      .token-builtin {
+        color: #8fd3ff;
+      }
+
+      .token-string {
+        color: #c8e478;
+      }
+
+      .token-color {
+        color: #f3d28b;
+      }
+
+      @media (max-width: 640px) {
+        main {
+          width: min(100% - 20px, 1120px);
+          padding-top: 18px;
+        }
+
+        .code-bar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Pure CSS Joystick Button</h1>
+        <p>
+          Drag the joystick first, then inspect the complete HTML file below.
+          The visual is built with HTML, CSS, SVG arrows, and a small pointer script.
+        </p>
+      </header>
+
+      <section class="demo-frame" aria-label="Interactive joystick demo">
+        <iframe
+          title="Pure CSS joystick interactive demo"
+          src="/tools/css-joystick-button/joystick-embed.html"
+          scrolling="no"
+        ></iframe>
+      </section>
+
+      <section class="code-panel" aria-label="Demo HTML source">
+        <div class="code-bar">
+          <span>Complete HTML</span>
+          <button type="button" id="copy-code">Copy code</button>
+        </div>
+        <pre><code id="source-code">Loading source...</code></pre>
+      </section>
+    </main>
+
+    <script>
+      const source = document.querySelector("#source-code");
+      const copyButton = document.querySelector("#copy-code");
+      let codeText = "";
+
+      function escapeHtml(value) {
+        return value
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      function highlightCode(value) {
+        const pattern =
+          /(\/\/.*$)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|(<\/?[a-zA-Z][^>]*?>)|\b(const|let|function|return|if|else|for|class|new|try|catch|await|async)\b|\b(document|window|Math|String|Array|Object)\b|(#(?:[0-9a-fA-F]{3}){1,2}\b|rgba?\([^)]+\))/gm;
+        let html = "";
+        let lastIndex = 0;
+        let match;
+
+        while ((match = pattern.exec(value)) !== null) {
+          html += escapeHtml(value.slice(lastIndex, match.index));
+          const token = escapeHtml(match[0]);
+          const className = match[1]
+            ? "token-comment"
+            : match[2]
+              ? "token-string"
+              : match[3]
+                ? "token-tag"
+                : match[4]
+                  ? "token-keyword"
+                  : match[5]
+                    ? "token-builtin"
+                    : "token-color";
+          html += `<span class="${className}">${token}</span>`;
+          lastIndex = pattern.lastIndex;
+        }
+
+        html += escapeHtml(value.slice(lastIndex));
+        return html;
+      }
+
+      async function loadSource() {
+        try {
+          const response = await fetch("/tools/css-joystick-button/joystick-embed.html");
+          codeText = await response.text();
+          source.innerHTML = highlightCode(codeText);
+        } catch {
+          source.textContent = "Unable to load source code.";
+        }
+      }
+
+      copyButton.addEventListener("click", async () => {
+        if (!codeText) return;
+        await navigator.clipboard.writeText(codeText);
+        copyButton.textContent = "Copied";
+        window.setTimeout(() => {
+          copyButton.textContent = "Copy code";
+        }, 1400);
+      });
+
+      loadSource();
+    </script>
+  </body>
+</html>

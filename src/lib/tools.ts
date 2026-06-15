@@ -73,6 +73,438 @@ export type Tool = {
 
 export const tools: Tool[] = [
   {
+    slug: "fpv-google-flow",
+    title: {
+      en: "Google Flow FPV Route Guide",
+      zh: "Google Flow FPV 路徑飛行攻略",
+    },
+    kicker: {
+      en: "Draw a camera path, then let Flow Agent fly it",
+      zh: "畫出鏡頭路徑，再讓 Flow Agent 幫你飛",
+    },
+    description: {
+      en: "Use a clean reference photo, draw a red flight path on top, then ask Google Flow Agent Mode to generate a first-person FPV city flight.",
+      zh: "準備一張參考照片，在上面畫出紅色飛行路徑，再用 Google Flow Agent Mode 生成第一人稱 FPV 城市飛行影片。",
+    },
+    coverTitle: {
+      en: "AI FPV\nRoute",
+      zh: "AI FPV\n路徑",
+    },
+    keyword: "FPV",
+    publishedAt: "2026-06-13",
+    hashtags: ["#GoogleFlow", "#FPV", "#AIVideo"],
+    cover: "/tools/fpv-google-flow-cover.png",
+    accent: "teal",
+    shareTitle: {
+      en: "Start with the result",
+      zh: "先看最後效果",
+    },
+    shareIntro: {
+      en: "This workflow turns a marked-up city photo into an FPV drone-style shot. The red route is only a camera guide; the final video should be clean, cinematic, and free of path marks.",
+      zh: "這個流程會把一張畫好路徑的城市照片變成 FPV drone 風格影片。紅色路徑只是給鏡頭看的參考，最後影片不應該出現路線、箭頭或標記。",
+    },
+    featuredMedia: {
+      en: [
+        {
+          type: "video",
+          src: "/tools/fpv-google-flow/videos/drone-flight.mp4",
+          poster: "/tools/fpv-google-flow/images/drone-flight-poster.jpg",
+          caption: "Final output: `Drone_flight.mp4`, generated from the marked Tokyo route image.",
+        },
+      ],
+      zh: [
+        {
+          type: "video",
+          src: "/tools/fpv-google-flow/videos/drone-flight.mp4",
+          poster: "/tools/fpv-google-flow/images/drone-flight-poster.jpg",
+          caption: "最後輸出：`Drone_flight.mp4`，由畫好路徑的 Tokyo 參考圖生成。",
+        },
+      ],
+    },
+    shareLinks: [
+      {
+        label: "Open Google Flow",
+        href: "https://labs.google/fx/tools/flow",
+      },
+      {
+        label: "Google Flow Help",
+        href: "https://support.google.com/flow/",
+      },
+    ],
+    toc: [
+      {
+        label: {
+          en: "1. Workflow overview",
+          zh: "1. 流程總覽",
+        },
+        href: "#overview",
+      },
+      {
+        label: {
+          en: "2. Prepare the reference photo",
+          zh: "2. 準備參考照片",
+        },
+        href: "#reference-photo",
+      },
+      {
+        label: {
+          en: "3. Draw the flight path",
+          zh: "3. 畫上飛行路徑",
+        },
+        href: "#draw-path",
+      },
+      {
+        label: {
+          en: "4. Use Flow Agent Mode",
+          zh: "4. 使用 Flow Agent Mode",
+        },
+        href: "#agent-mode",
+      },
+      {
+        label: {
+          en: "5. Paste the prompt",
+          zh: "5. 貼上 prompt",
+        },
+        href: "#prompt",
+      },
+      {
+        label: {
+          en: "6. Check the output",
+          zh: "6. 檢查輸出結果",
+        },
+        href: "#output",
+      },
+      {
+        label: {
+          en: "7. Fix common problems",
+          zh: "7. 常見問題修正",
+        },
+        href: "#fixes",
+      },
+    ],
+    sections: [
+      {
+        id: "overview",
+        heading: {
+          en: "Workflow overview",
+          zh: "流程總覽",
+        },
+        body: {
+          en: [
+            "The idea is simple: you use an image as a map, draw the exact camera route on it, then tell Google Flow that the marks are movement references only.",
+            {
+              type: "list",
+              items: [
+                "Start with a clean reference photo.",
+                "Draw a visible red route with arrows and node order.",
+                "Upload the marked image into Google Flow.",
+                "Use Flow Agent / Agent Mode so the model treats the image like a plan.",
+                "Paste a prompt that separates guide marks from final visuals.",
+                "Generate the FPV shot and check whether it follows Node 1, Node 2, and Node 3.",
+              ],
+            },
+          ],
+          zh: [
+            "概念很簡單：你把圖片當成鏡頭地圖，在上面畫出攝影機要飛的路徑，再告訴 Google Flow 這些紅線只是移動參考，不可以出現在最後影片裡。",
+            {
+              type: "list",
+              items: [
+                "先準備一張乾淨的 reference photo。",
+                "在上面畫出清楚的紅色路徑、箭頭和節點順序。",
+                "把畫好路徑的圖丟進 Google Flow。",
+                "使用 Flow Agent / Agent Mode，讓模型把圖片當成執行計畫。",
+                "貼上 prompt，明確區分「參考標記」和「最終畫面」。",
+                "生成 FPV 影片後，檢查它有沒有照 Node 1、Node 2、Node 3 的順序飛。",
+              ],
+            },
+          ],
+        },
+      },
+      {
+        id: "reference-photo",
+        heading: {
+          en: "Step 1: Prepare the reference photo",
+          zh: "Step 1：準備參考照片",
+        },
+        body: {
+          en: [
+            "Start from a clean image with no route marks. In this example, the base image is `tokyo_raw.png`.",
+            "Choose a photo with strong architecture, clear depth, and visible lanes or gaps the camera can pass through. A dense night city works well because the light trails make the speed feel stronger.",
+            {
+              type: "image",
+              src: "/tools/fpv-google-flow/images/tokyo-raw.png",
+              alt: "Clean Tokyo night reference photo without route marks",
+              width: 2728,
+              height: 1536,
+              caption: "`tokyo_raw.png`: the clean reference image before drawing the camera path.",
+            },
+          ],
+          zh: [
+            "先從沒有路徑標記的乾淨圖片開始。這個例子使用的是 `tokyo_raw.png`。",
+            "建議選有明顯建築、空間深度清楚、看得出鏡頭可以穿越哪裡的照片。夜景城市很適合，因為燈光會讓速度感更強。",
+            {
+              type: "image",
+              src: "/tools/fpv-google-flow/images/tokyo-raw.png",
+              alt: "Clean Tokyo night reference photo without route marks",
+              width: 2728,
+              height: 1536,
+              caption: "`tokyo_raw.png`：還沒畫路徑前的乾淨 reference image。",
+            },
+          ],
+        },
+      },
+      {
+        id: "draw-path",
+        heading: {
+          en: "Step 2: Draw the flight path",
+          zh: "Step 2：畫上飛行路徑",
+        },
+        body: {
+          en: [
+            "Draw the route directly on top of the reference photo. Use a high-contrast color like red, add arrows, and label the path order with nodes.",
+            "The route image for this guide is `tokyo.png`: it shows the intended direction from Node 1 to Node 2 to Node 3.",
+            {
+              type: "image",
+              src: "/tools/fpv-google-flow/images/tokyo-path.png",
+              alt: "Tokyo reference photo with red FPV camera route and nodes",
+              width: 1209,
+              height: 683,
+              caption: "`tokyo.png`: the red path is a camera movement guide only. It should not appear in the final video.",
+            },
+            {
+              type: "list",
+              items: [
+                "Use a color that is easy for the model to recognize.",
+                "Make the path continuous instead of broken into unclear segments.",
+                "Use arrows to show direction.",
+                "Use node labels when the route has multiple turns.",
+                "Keep the route simple enough for one continuous shot.",
+              ],
+            },
+          ],
+          zh: [
+            "直接在 reference photo 上畫出鏡頭路徑。用紅色這種高對比顏色，加上箭頭，並用節點標出飛行順序。",
+            "這篇使用的路徑圖是 `tokyo.png`：它標示了鏡頭從 Node 1 到 Node 2，再到 Node 3 的方向。",
+            {
+              type: "image",
+              src: "/tools/fpv-google-flow/images/tokyo-path.png",
+              alt: "Tokyo reference photo with red FPV camera route and nodes",
+              width: 1209,
+              height: 683,
+              caption: "`tokyo.png`：紅色路線只是鏡頭移動參考，不應該出現在最後影片裡。",
+            },
+            {
+              type: "list",
+              items: [
+                "使用模型容易辨識的高對比顏色。",
+                "路徑盡量連續，不要斷成太多不清楚的小段。",
+                "用箭頭標出方向。",
+                "路徑有多個轉折時，用 node label 標出順序。",
+                "路線不要太複雜，讓它像一鏡到底可以完成的動作。",
+              ],
+            },
+          ],
+        },
+      },
+      {
+        id: "agent-mode",
+        heading: {
+          en: "Step 3: Use Flow Agent Mode",
+          zh: "Step 3：使用 Flow Agent Mode",
+        },
+        body: {
+          en: [
+            "Open Google Flow, upload the route image, then use Flow Agent / Agent Mode. The goal is to make Flow treat the marked photo as a camera plan instead of just a visual reference.",
+            "The operation flow below shows the setup process inside Google Flow.",
+            {
+              type: "video",
+              src: "/tools/fpv-google-flow/videos/flow-agent-mode.mp4",
+              poster: "/tools/fpv-google-flow/images/flow-agent-mode-poster.jpg",
+              caption: "Google Flow operation flow. The original screen capture was provided as `flow.gif`; this page uses a lighter MP4 version for faster loading.",
+            },
+            {
+              type: "list",
+              items: [
+                "Upload the marked `tokyo.png` image as the reference.",
+                "Use Agent Mode so the model follows instructions from the image and prompt together.",
+                "Keep the prompt focused on camera movement, trajectory, and negative constraints.",
+                "Do not rely on the image alone. The prompt must explicitly say the red marks are not part of the final video.",
+              ],
+            },
+          ],
+          zh: [
+            "打開 Google Flow，先上傳畫好路徑的圖片，然後使用 Flow Agent / Agent Mode。重點是讓 Flow 把這張圖理解成鏡頭計畫，而不是單純的視覺參考圖。",
+            "下面這段操作流程示範的是在 Google Flow 裡的設定過程。",
+            {
+              type: "video",
+              src: "/tools/fpv-google-flow/videos/flow-agent-mode.mp4",
+              poster: "/tools/fpv-google-flow/images/flow-agent-mode-poster.jpg",
+              caption: "Google Flow 操作流程。原始素材是 `flow.gif`，這裡使用較輕的 MP4 版本，載入速度比較合理。",
+            },
+            {
+              type: "list",
+              items: [
+                "把標好路徑的 `tokyo.png` 當作 reference 上傳。",
+                "使用 Agent Mode，讓模型同時讀取圖片和 prompt 的指令。",
+                "prompt 要集中在 camera movement、trajectory 和 negative constraints。",
+                "不要只靠圖片。prompt 一定要明確說紅線不是最終畫面的一部分。",
+              ],
+            },
+          ],
+        },
+        links: [
+          {
+            label: "Open Google Flow",
+            href: "https://labs.google/fx/tools/flow",
+          },
+          {
+            label: "Google Flow Help Center",
+            href: "https://support.google.com/flow/",
+          },
+        ],
+      },
+      {
+        id: "prompt",
+        heading: {
+          en: "Step 4: Paste the prompt",
+          zh: "Step 4：貼上 prompt",
+        },
+        body: {
+          en: [
+            "Paste this prompt after uploading the marked route image. Keep the section labels because they make the instruction easier for the agent to parse.",
+            {
+              type: "terminal",
+              title: "Google Flow FPV Prompt",
+              wrap: true,
+              lines: [
+                "[Constraints]",
+                "Remove the red lines from the image. The red lines and arrows are only for camera movement reference; no red lines, arrows, or markers should appear in the final video.",
+                "",
+                "[Camera Movement]",
+                "First-person FPV perspective, ultra-high-speed camera movement, cinematic, one-take / continuous shot. The camera must strictly follow the red path shown in the image without deviating, skipping, or simplifying the route. The architectural structures passed through must be clear, with realistic silhouettes and strong texture details.",
+                "",
+                "[Trajectory]",
+                "The camera starts flying continuously through Node 1, Node 2, and Node 3 in sequential order, strictly following the direction of the arrows.",
+                "",
+                "[Texture & Quality]",
+                "The visuals must be realistic, with smooth and stable motion, a strong sense of speed, and clear spatial continuity. No repeating buildings, no distortion, no text, and no watermarks.",
+              ],
+            },
+            "The most important line is the first constraint. Without it, the model may treat the red path as something visible in the scene instead of a hidden camera guide.",
+          ],
+          zh: [
+            "上傳路徑圖後，直接貼上這段 prompt。建議保留 section labels，因為這樣 Agent 比較容易理解每一段指令的用途。",
+            {
+              type: "terminal",
+              title: "Google Flow FPV Prompt",
+              wrap: true,
+              lines: [
+                "[Constraints]",
+                "Remove the red lines from the image. The red lines and arrows are only for camera movement reference; no red lines, arrows, or markers should appear in the final video.",
+                "",
+                "[Camera Movement]",
+                "First-person FPV perspective, ultra-high-speed camera movement, cinematic, one-take / continuous shot. The camera must strictly follow the red path shown in the image without deviating, skipping, or simplifying the route. The architectural structures passed through must be clear, with realistic silhouettes and strong texture details.",
+                "",
+                "[Trajectory]",
+                "The camera starts flying continuously through Node 1, Node 2, and Node 3 in sequential order, strictly following the direction of the arrows.",
+                "",
+                "[Texture & Quality]",
+                "The visuals must be realistic, with smooth and stable motion, a strong sense of speed, and clear spatial continuity. No repeating buildings, no distortion, no text, and no watermarks.",
+              ],
+            },
+            "最重要的是第一段 constraint。如果沒有明確寫，模型可能會把紅色路徑當成畫面中真的存在的物件，而不是隱藏的鏡頭參考。",
+          ],
+        },
+      },
+      {
+        id: "output",
+        heading: {
+          en: "Step 5: Check the output",
+          zh: "Step 5：檢查輸出結果",
+        },
+        body: {
+          en: [
+            "After generation, you should get a complete FPV flight video like `Drone_flight.mp4`.",
+            "Check the output with three questions:",
+            {
+              type: "list",
+              items: [
+                "Did the final video remove every red line, arrow, marker, and node label?",
+                "Does the camera clearly fly through Node 1, Node 2, and Node 3 in order?",
+                "Does the movement feel like one continuous FPV shot instead of several unrelated clips?",
+              ],
+            },
+            "If all three are true, the route control worked.",
+          ],
+          zh: [
+            "生成後，你應該會得到像 `Drone_flight.mp4` 這樣的完整 FPV 飛行影片。",
+            "檢查輸出時看三件事：",
+            {
+              type: "list",
+              items: [
+                "最後影片有沒有完全移除紅線、箭頭、標記和 node label？",
+                "鏡頭有沒有清楚照 Node 1、Node 2、Node 3 的順序飛？",
+                "整段運鏡像不像一鏡到底的 FPV，而不是幾段不相關畫面硬接？",
+              ],
+            },
+            "三個都成立，代表這次 route control 成功。",
+          ],
+        },
+      },
+      {
+        id: "fixes",
+        heading: {
+          en: "Fix common problems",
+          zh: "常見問題修正",
+        },
+        body: {
+          en: [
+            {
+              type: "list",
+              items: [
+                "Red marks appear in the final video: strengthen the first constraint and say `no red lines, no arrows, no labels, no markers`.",
+                "The camera ignores the route: simplify the path, make the arrows larger, and use clearer node labels.",
+                "The video jumps between shots: emphasize `one-take / continuous shot` and `clear spatial continuity`.",
+                "Buildings repeat or distort: keep `no repeating buildings` and `no distortion` in the quality section.",
+                "The movement is too slow: use `ultra-high-speed camera movement` and `strong sense of speed`.",
+              ],
+            },
+          ],
+          zh: [
+            {
+              type: "list",
+              items: [
+                "最後影片出現紅線：加強第一段 constraint，明確寫 `no red lines, no arrows, no labels, no markers`。",
+                "鏡頭沒有照路徑飛：簡化路線、放大箭頭、讓 node label 更清楚。",
+                "影片像多段畫面跳接：強調 `one-take / continuous shot` 和 `clear spatial continuity`。",
+                "建築重複或變形：保留 `no repeating buildings` 和 `no distortion`。",
+                "速度感不夠：使用 `ultra-high-speed camera movement` 和 `strong sense of speed`。",
+              ],
+            },
+          ],
+        },
+      },
+    ],
+    resources: [
+      {
+        label: "Google Flow",
+        href: "https://labs.google/fx/tools/flow",
+      },
+      {
+        label: "Google Flow Help Center",
+        href: "https://support.google.com/flow/",
+      },
+      {
+        label: "Clean Reference Image",
+        href: "/tools/fpv-google-flow/images/tokyo-raw.png",
+      },
+      {
+        label: "Marked Route Image",
+        href: "/tools/fpv-google-flow/images/tokyo-path.png",
+      },
+    ],
+  },
+  {
     slug: "css-joystick-button",
     title: {
       en: "Pure CSS Joystick Button",

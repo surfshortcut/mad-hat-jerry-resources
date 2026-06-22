@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="en" class="p2m-chromeless">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AURALIME Logo Motion</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f4fff2;
+      --demo-bg: #eef8e8;
+      --surface: #f5f5f3;
+      --border: rgba(0,0,0,0.08);
+      --text-primary: #0d0d0d;
+      --text-secondary: #777;
+      --text-tertiary: #aaa;
+      --accent: #e64036;
+      --speed-progress: 9%;
+    }
+
+    html, body {
+      min-height: 100%;
+      background:
+          radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.9), transparent 42%),
+          linear-gradient(180deg, var(--bg), var(--demo-bg));
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 1rem;
+    }
+
+    #logo-root {
+      width: min(82vw, 720px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: visible;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #logo-root svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      overflow: visible;
+      text-rendering: geometricPrecision;
+    }
+
+    .atomic-motions {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-end;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .atom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .atom-stage {
+      width: 74px;
+      height: 74px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .atom-stage img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 260ms cubic-bezier(0.34,1.56,0.64,1);
+      transform-origin: center;
+    }
+
+    .atom-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+    }
+
+    .principles {
+      max-width: 760px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .pill {
+      font-size: 11px;
+      line-height: 1;
+      padding: 5px 10px;
+      border: 0.5px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .pill.active {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      font: 12px/1.2 inherit;
+      letter-spacing: 0.04em;
+      padding: 8px 18px;
+      border: 0.5px solid var(--border);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    button.primary {
+      color: var(--bg);
+      background: var(--text-primary);
+      border-color: var(--text-primary);
+    }
+
+    .speed-control {
+      width: min(340px, 80vw);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      border: 0.5px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-secondary);
+    }
+
+    .speed-caption,
+    .speed-value {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .speed-value {
+      min-width: 46px;
+      text-align: right;
+      color: var(--text-primary);
+      text-transform: none;
+      font-variant-numeric: tabular-nums;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      min-width: 120px;
+      height: 24px;
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      cursor: grab;
+      accent-color: var(--accent);
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--speed-progress), var(--border) var(--speed-progress), var(--border) 100%);
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      margin-top: -6.5px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      background: var(--accent);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.18);
+    }
+
+    .footer {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .p2m-chromeless .atomic-motions,
+    .p2m-chromeless .principles,
+    .p2m-chromeless .controls,
+    .p2m-chromeless .footer {
+      display: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      :root {
+        --p2m-duration: 1280ms;
+        --p2m-ease-fresh: cubic-bezier(0.22, 1, 0.36, 1);
+        --p2m-ease-splash: cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      #logo-main {
+        overflow: visible;
+      }
+
+      #mark,
+      #lime-rind,
+      #lime-core,
+      #leaf,
+      #droplet,
+      #wordmark {
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+
+      #seg-1,
+      #seg-2,
+      #seg-3,
+      #splash-wave,
+      #word-wave {
+        stroke-dasharray: 1 1;
+        stroke-dashoffset: 1;
+      }
+
+      #lime-rind {
+        animation: al-rind 740ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both;
+      }
+
+      #lime-core {
+        animation: al-core 760ms cubic-bezier(0.34, 1.56, 0.64, 1) 170ms both;
+      }
+
+      #seg-1 { animation: al-segment 480ms cubic-bezier(0.22, 1, 0.36, 1) 420ms both; }
+      #seg-2 { animation: al-segment 480ms cubic-bezier(0.22, 1, 0.36, 1) 485ms both; }
+      #seg-3 { animation: al-segment 480ms cubic-bezier(0.22, 1, 0.36, 1) 550ms both; }
+
+      #leaf {
+        animation: al-leaf 800ms cubic-bezier(0.34, 1.56, 0.64, 1) 230ms both;
+      }
+
+      #droplet {
+        animation: al-droplet 710ms cubic-bezier(0.34, 1.56, 0.64, 1) 560ms both;
+      }
+
+      #splash-wave {
+        animation: al-wave 580ms cubic-bezier(0.22, 1, 0.36, 1) 710ms both;
+      }
+
+      #wordmark {
+        animation: al-word 680ms cubic-bezier(0.22, 1, 0.36, 1) 520ms both;
+      }
+
+      #word-wave {
+        animation: al-word-wave 520ms cubic-bezier(0.22, 1, 0.36, 1) 760ms both;
+      }
+
+      @keyframes al-rind {
+        0% {
+          opacity: 0;
+          transform: scale(0.2) rotate(-36deg);
+          filter: blur(7px);
+        }
+        30% {
+          opacity: 1;
+          transform: scale(0.72) rotate(-18deg);
+          filter: blur(2px);
+          animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); /* --p2m-ease-fresh */
+        }
+        72% {
+          opacity: 1;
+          transform: scale(1.08) rotate(5deg);
+          filter: blur(0);
+          animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); /* --p2m-ease-splash */
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1) rotate(0deg);
+          filter: blur(0);
+        }
+      }
+
+      @keyframes al-core {
+        0% {
+          opacity: 0;
+          transform: scale(0.15);
+        }
+        70% {
+          opacity: 1;
+          transform: scale(1.08);
+          animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); /* --p2m-ease-splash */
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes al-segment {
+        0% {
+          stroke-dashoffset: 1;
+          opacity: 0;
+        }
+        30% { opacity: 1; }
+        100% {
+          stroke-dashoffset: 0;
+          opacity: 1;
+        }
+      }
+
+      @keyframes al-leaf {
+        0% {
+          opacity: 0;
+          transform: translate(-20px, 18px) rotate(-70deg) scale(0.25);
+        }
+        62% {
+          opacity: 1;
+          transform: translate(3px, -3px) rotate(8deg) scale(1.13);
+          animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); /* --p2m-ease-splash */
+        }
+        100% {
+          opacity: 1;
+          transform: translate(0, 0) rotate(0deg) scale(1);
+        }
+      }
+
+      @keyframes al-droplet {
+        0% {
+          opacity: 0;
+          transform: translate(-12px, -38px) scale(0.35);
+        }
+        55% {
+          opacity: 1;
+          transform: translate(2px, 5px) scaleX(1.14) scaleY(0.86);
+          animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); /* --p2m-ease-splash */
+        }
+        78% {
+          transform: translate(0, -2px) scaleX(0.94) scaleY(1.07);
+        }
+        100% {
+          opacity: 1;
+          transform: translate(0, 0) scale(1);
+        }
+      }
+
+      @keyframes al-wave {
+        0% {
+          stroke-dashoffset: 1;
+          opacity: 0;
+        }
+        45% { opacity: 0.36; }
+        100% {
+          stroke-dashoffset: 0;
+          opacity: 0.36;
+        }
+      }
+
+      @keyframes al-word {
+        0% {
+          opacity: 0;
+          transform: translateY(18px);
+          clip-path: inset(100% 0 0 0);
+        }
+        68% {
+          opacity: 1;
+          transform: translateY(-2px);
+          clip-path: inset(0 0 0 0);
+          animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); /* --p2m-ease-splash */
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      @keyframes al-word-wave {
+        0% {
+          stroke-dashoffset: 1;
+          opacity: 0;
+        }
+        35% { opacity: 1; }
+        100% {
+          stroke-dashoffset: 0;
+          opacity: 1;
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+  <main id="logo-root" aria-label="Animated logo" data-p2m-duration="1280"></main>
+
+  <section class="atomic-motions" aria-label="Atomic motion studies">
+    <div class="atom" data-atom="hover"><div class="atom-stage"></div><span class="atom-label">Hover</span></div>
+    <div class="atom" data-atom="pulse"><div class="atom-stage"></div><span class="atom-label">Pulse</span></div>
+    <div class="atom" data-atom="arc"><div class="atom-stage"></div><span class="atom-label">Arc</span></div>
+    <div class="atom" data-atom="press"><div class="atom-stage"></div><span class="atom-label">Press</span></div>
+  </section>
+
+  <div class="principles" id="principlesRow">
+    <span class="pill" data-p="squashstretch">Squash &amp; stretch</span>
+    <span class="pill" data-p="anticipation">Anticipation</span>
+    <span class="pill" data-p="staging">Staging</span>
+    <span class="pill" data-p="followthrough">Follow through</span>
+    <span class="pill" data-p="overlap">Overlapping</span>
+    <span class="pill" data-p="slowinout">Slow in / out</span>
+    <span class="pill" data-p="arc">Arc</span>
+    <span class="pill" data-p="secondary">Secondary action</span>
+    <span class="pill" data-p="timing">Timing</span>
+    <span class="pill" data-p="appeal">Appeal</span>
+  </div>
+
+  <div class="controls">
+    <button class="primary" id="btnReplay" type="button">Replay</button>
+    <button id="btnSlow" type="button">Slow motion</button>
+    <label class="speed-control" for="speedSlider">
+      <span class="speed-caption">Speed</span>
+      <input id="speedSlider" type="range" min="0.25" max="2.5" step="0.05" value="0.45" aria-label="Animation speed">
+      <span class="speed-value" id="speedValue">0.45x</span>
+    </label>
+  </div>
+
+  <p class="footer">Click the main logo to replay | Drag speed | Try atomic motions</p>
+
+  <script>
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    const LOGO = {"tag":"svg","attrs":{"id":"logo-main","width":"420","height":"160","viewBox":"0 0 420 160","role":"img","aria-labelledby":"title desc"},"children":[{"tag":"title","attrs":{"id":"title"},"children":[],"text":"AURALIME citrus drink logo"},{"tag":"desc","attrs":{"id":"desc"},"children":[],"text":"A fresh citrus drink logo with a lime slice, leaf, droplet, wave, and AURALIME wordmark."},{"tag":"defs","attrs":{},"children":[{"tag":"linearGradient","attrs":{"id":"al-lime-gradient","x1":"28","y1":"30","x2":"126","y2":"126","gradientUnits":"userSpaceOnUse"},"children":[{"tag":"stop","attrs":{"offset":"0","stop-color":"#eaff77"},"children":[]},{"tag":"stop","attrs":{"offset":"0.48","stop-color":"#68d94e"},"children":[]},{"tag":"stop","attrs":{"offset":"1","stop-color":"#00a86b"},"children":[]}]},{"tag":"linearGradient","attrs":{"id":"al-citrus-gradient","x1":"35","y1":"26","x2":"114","y2":"120","gradientUnits":"userSpaceOnUse"},"children":[{"tag":"stop","attrs":{"offset":"0","stop-color":"#ffe56b"},"children":[]},{"tag":"stop","attrs":{"offset":"1","stop-color":"#ff9c3a"},"children":[]}]}]},{"tag":"g","attrs":{"id":"brand","fill":"none"},"children":[{"tag":"g","attrs":{"id":"mark","transform":"translate(18 14)"},"children":[{"tag":"circle","attrs":{"id":"lime-rind","cx":"66","cy":"66","r":"48","fill":"url(#al-lime-gradient)"},"children":[]},{"tag":"circle","attrs":{"id":"lime-core","cx":"66","cy":"66","r":"34","fill":"#fffdf4","opacity":"0.94"},"children":[]},{"tag":"g","attrs":{"id":"segments","fill":"none","stroke":"#66c94b","stroke-width":"3.5","stroke-linecap":"round"},"children":[{"tag":"path","attrs":{"id":"seg-1","d":"M66 34 V98","pathLength":"1"},"children":[]},{"tag":"path","attrs":{"id":"seg-2","d":"M38 50 L94 82","pathLength":"1"},"children":[]},{"tag":"path","attrs":{"id":"seg-3","d":"M94 50 L38 82","pathLength":"1"},"children":[]}]},{"tag":"path","attrs":{"id":"leaf","d":"M84 24 C105 13 118 22 119 43 C98 47 87 40 84 24 Z","fill":"#1fb874"},"children":[]},{"tag":"path","attrs":{"id":"droplet","d":"M121 84 C133 99 124 116 109 116 C94 116 88 99 99 86 C104 80 109 73 111 65 C113 72 116 78 121 84 Z","fill":"url(#al-citrus-gradient)"},"children":[]},{"tag":"path","attrs":{"id":"splash-wave","d":"M22 110 C43 96 70 96 96 110 C107 116 121 117 134 110","stroke":"#00a86b","stroke-width":"6","stroke-linecap":"round","opacity":"0.36","pathLength":"1"},"children":[]}]},{"tag":"g","attrs":{"id":"wordmark"},"children":[{"tag":"text","attrs":{"id":"wordmark-text","x":"158","y":"88","fill":"#15382b","font-family":"Arial Black, Arial, Helvetica, sans-serif","font-size":"35","font-weight":"900","letter-spacing":"1.2"},"children":[],"text":"AURALIME"},{"tag":"path","attrs":{"id":"word-wave","d":"M162 105 C204 92 246 118 288 104 C316 94 344 96 374 107","stroke":"#ffb23f","stroke-width":"5","stroke-linecap":"round","pathLength":"1"},"children":[]}]}]}]};
+    const SVG_TEXT = "<svg id=\"logo-main\" width=\"420\" height=\"160\" viewBox=\"0 0 420 160\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-labelledby=\"title desc\"><style>:root,svg{--bg:#ffffff;--surface:#f5f5f3;--text-primary:#0d0d0d;--text-secondary:#777;--text-tertiary:#aaa;--logo-wordmark:#363e47;--accent:#e64036;--red:#e64036;--red-bright:#ff493f;}<\/style>\n  <title id=\"title\">AURALIME citrus drink logo<\/title>\n  <desc id=\"desc\">A fresh citrus drink logo with a lime slice, leaf, droplet, wave, and AURALIME wordmark.<\/desc>\n  <defs>\n    <linearGradient id=\"al-lime-gradient\" x1=\"28\" y1=\"30\" x2=\"126\" y2=\"126\" gradientUnits=\"userSpaceOnUse\">\n      <stop offset=\"0\" stop-color=\"#eaff77\"/>\n      <stop offset=\"0.48\" stop-color=\"#68d94e\"/>\n      <stop offset=\"1\" stop-color=\"#00a86b\"/>\n    <\/linearGradient>\n    <linearGradient id=\"al-citrus-gradient\" x1=\"35\" y1=\"26\" x2=\"114\" y2=\"120\" gradientUnits=\"userSpaceOnUse\">\n      <stop offset=\"0\" stop-color=\"#ffe56b\"/>\n      <stop offset=\"1\" stop-color=\"#ff9c3a\"/>\n    <\/linearGradient>\n  <\/defs>\n  <g id=\"brand\" fill=\"none\">\n    <g id=\"mark\" transform=\"translate(18 14)\">\n      <circle id=\"lime-rind\" cx=\"66\" cy=\"66\" r=\"48\" fill=\"url(#al-lime-gradient)\"/>\n      <circle id=\"lime-core\" cx=\"66\" cy=\"66\" r=\"34\" fill=\"#fffdf4\" opacity=\"0.94\"/>\n      <g id=\"segments\" fill=\"none\" stroke=\"#66c94b\" stroke-width=\"3.5\" stroke-linecap=\"round\">\n        <path id=\"seg-1\" d=\"M66 34 V98\" pathLength=\"1\"/>\n        <path id=\"seg-2\" d=\"M38 50 L94 82\" pathLength=\"1\"/>\n        <path id=\"seg-3\" d=\"M94 50 L38 82\" pathLength=\"1\"/>\n      <\/g>\n      <path id=\"leaf\" d=\"M84 24 C105 13 118 22 119 43 C98 47 87 40 84 24 Z\" fill=\"#1fb874\"/>\n      <path id=\"droplet\" d=\"M121 84 C133 99 124 116 109 116 C94 116 88 99 99 86 C104 80 109 73 111 65 C113 72 116 78 121 84 Z\" fill=\"url(#al-citrus-gradient)\"/>\n      <path id=\"splash-wave\" d=\"M22 110 C43 96 70 96 96 110 C107 116 121 117 134 110\" stroke=\"#00a86b\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.36\" pathLength=\"1\"/>\n    <\/g>\n    <g id=\"wordmark\">\n      <text id=\"wordmark-text\" x=\"158\" y=\"88\" fill=\"#15382b\" font-family=\"Arial Black, Arial, Helvetica, sans-serif\" font-size=\"35\" font-weight=\"900\" letter-spacing=\"1.2\">AURALIME<\/text>\n      <path id=\"word-wave\" d=\"M162 105 C204 92 246 118 288 104 C316 94 344 96 374 107\" stroke=\"#ffb23f\" stroke-width=\"5\" stroke-linecap=\"round\" pathLength=\"1\"/>\n    <\/g>\n  <\/g>\n<\/svg>\n";
+    const SVG_URI = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(SVG_TEXT);
+    const DURATION = 1280;
+
+    let playbackRate = 0.45;
+    let pulseRaf = null;
+    let arcRaf = null;
+    window.__p2mReady = false;
+
+    function createSvgNode(node) {
+      const element = document.createElementNS(SVG_NS, node.tag);
+      for (const [name, value] of Object.entries(node.attrs || {})) {
+        element.setAttribute(name, value);
+      }
+      if (node.text) {
+        element.appendChild(document.createTextNode(node.text));
+      }
+      for (const child of node.children || []) {
+        element.appendChild(createSvgNode(child));
+      }
+      return element;
+    }
+
+    function heroAnimations() {
+      const root = document.getElementById("logo-root");
+      if (root.getAnimations) return root.getAnimations({ subtree: true });
+      return document.getAnimations().filter(animation => {
+        const target = animation.effect && animation.effect.target;
+        return target && root.contains(target);
+      });
+    }
+
+    function applyPlaybackRate() {
+      for (const animation of heroAnimations()) {
+        if (animation.updatePlaybackRate) animation.updatePlaybackRate(playbackRate);
+        else animation.playbackRate = playbackRate;
+      }
+    }
+
+    function renderHero() {
+      const root = document.getElementById("logo-root");
+      root.replaceChildren(createSvgNode(LOGO));
+      const svg = root.querySelector("svg");
+      if (svg) {
+        svg.removeAttribute("width");
+        svg.removeAttribute("height");
+        svg.style.width = "100%";
+        svg.style.height = "auto";
+        svg.style.overflow = "visible";
+      }
+      requestAnimationFrame(() => requestAnimationFrame(applyPlaybackRate));
+    }
+
+    function flashPills(...names) {
+      document.querySelectorAll(".pill").forEach(pill => pill.classList.remove("active"));
+      names.forEach(name => {
+        const pill = document.querySelector(`[data-p="${name}"]`);
+        if (pill) pill.classList.add("active");
+      });
+    }
+
+    function cyclePrinciples() {
+      const phases = [
+        ["staging", "timing"],
+        ["anticipation", "squashstretch"],
+        ["arc", "slowinout"],
+        ["overlap", "followthrough"],
+        ["appeal"]
+      ];
+      let i = 0;
+      flashPills(...phases[0]);
+      return setInterval(() => {
+        i = (i + 1) % phases.length;
+        flashPills(...phases[i]);
+      }, Math.max(240, DURATION / phases.length / Math.max(playbackRate, 0.25)));
+    }
+
+    let pillTimer = null;
+    function replayMain() {
+      clearInterval(pillTimer);
+      renderHero();
+      pillTimer = cyclePrinciples();
+      setTimeout(() => {
+        clearInterval(pillTimer);
+        document.querySelectorAll(".pill").forEach(pill => pill.classList.remove("active"));
+      }, DURATION / Math.max(playbackRate, 0.25) + 600);
+    }
+
+    function formatSpeed(rate) {
+      return `${rate.toFixed(2)}x`;
+    }
+
+    function updateSpeedUI() {
+      const slider = document.getElementById("speedSlider");
+      const value = Number(slider.value);
+      const min = Number(slider.min);
+      const max = Number(slider.max);
+      const progress = ((value - min) / (max - min)) * 100;
+      document.getElementById("speedValue").textContent = formatSpeed(value);
+      slider.style.setProperty("--speed-progress", `${progress}%`);
+      const slow = value <= 0.251;
+      const btnSlow = document.getElementById("btnSlow");
+      btnSlow.textContent = slow ? "Normal speed" : "Slow motion";
+      btnSlow.style.background = slow ? "var(--surface)" : "";
+      btnSlow.style.borderColor = slow ? "var(--text-secondary)" : "";
+    }
+
+    function setPlaybackRate(rate, replay = false) {
+      const slider = document.getElementById("speedSlider");
+      const min = Number(slider.min);
+      const max = Number(slider.max);
+      playbackRate = Math.min(max, Math.max(min, Number(rate)));
+      slider.value = String(playbackRate);
+      updateSpeedUI();
+      applyPlaybackRate();
+      if (replay) replayMain();
+    }
+
+    function setupAtomImages() {
+      document.querySelectorAll(".atom-stage").forEach(stage => {
+        const img = new Image();
+        img.src = SVG_URI;
+        img.alt = "";
+        stage.appendChild(img);
+      });
+    }
+
+    function setupAtoms() {
+      const hover = document.querySelector('[data-atom="hover"] img');
+      const pulse = document.querySelector('[data-atom="pulse"] img');
+      const arc = document.querySelector('[data-atom="arc"] img');
+      const press = document.querySelector('[data-atom="press"] img');
+
+      hover.parentElement.addEventListener("mouseenter", () => {
+        flashPills("squashstretch", "appeal");
+        hover.style.transform = "scale(1.08) rotate(-1.5deg)";
+      });
+      hover.parentElement.addEventListener("mouseleave", () => {
+        hover.style.transform = "scale(1)";
+      });
+
+      function pulseTick(ts) {
+        const p = (Math.sin(ts / 900) + 1) / 2;
+        pulse.style.transform = `scale(${1 + 0.1 * p})`;
+        pulseRaf = requestAnimationFrame(pulseTick);
+      }
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        pulseRaf = requestAnimationFrame(pulseTick);
+      }
+
+      let arcAngle = -14;
+      let arcVel = 0;
+      function arcTick() {
+        arcVel += (0 - arcAngle) * 0.08;
+        arcVel *= 0.86;
+        arcAngle += arcVel;
+        arc.style.transform = `rotate(${arcAngle}deg)`;
+        arcRaf = requestAnimationFrame(arcTick);
+      }
+      arc.parentElement.addEventListener("mouseenter", () => {
+        flashPills("arc", "anticipation", "appeal");
+        cancelAnimationFrame(arcRaf);
+        arcAngle = 28;
+        arcVel = 0;
+        arcTick();
+      });
+      arc.parentElement.addEventListener("mouseleave", () => {
+        arcAngle = 0;
+      });
+
+      press.parentElement.addEventListener("mousedown", () => {
+        flashPills("squashstretch", "anticipation");
+        press.style.transform = "scaleX(1.10) scaleY(0.88)";
+      });
+      ["mouseup", "mouseleave"].forEach(ev => {
+        press.parentElement.addEventListener(ev, () => {
+          press.style.transform = "scale(1)";
+        });
+      });
+    }
+
+    function applyQaMode() {
+      const params = new URLSearchParams(location.search);
+      const seekMs = params.get("t");
+      const staticMode = params.get("static");
+      if (seekMs === null && staticMode === null) {
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          applyPlaybackRate();
+          window.__p2mReady = true;
+        }));
+        return;
+      }
+
+      document.documentElement.classList.add("p2m-chromeless");
+      cancelAnimationFrame(pulseRaf);
+      cancelAnimationFrame(arcRaf);
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        for (const animation of heroAnimations()) {
+          if (staticMode !== null) {
+            try {
+              animation.finish();
+            } catch (err) {
+              animation.cancel();
+            }
+          } else {
+            animation.pause();
+            animation.currentTime = Number(seekMs);
+          }
+        }
+        window.__p2mReady = true;
+      }));
+    }
+
+    document.getElementById("btnReplay").addEventListener("click", replayMain);
+    document.getElementById("logo-root").addEventListener("click", replayMain);
+    document.getElementById("speedSlider").addEventListener("input", event => {
+      setPlaybackRate(event.target.value, false);
+    });
+    document.getElementById("btnSlow").addEventListener("click", () => {
+      const slow = Number(document.getElementById("speedSlider").value) <= 0.251;
+      setPlaybackRate(slow ? 0.45 : 0.25, true);
+    });
+
+    setupAtomImages();
+    setupAtoms();
+    setPlaybackRate(0.45, false);
+    renderHero();
+    applyQaMode();
+  </script>
+</body>
+</html>

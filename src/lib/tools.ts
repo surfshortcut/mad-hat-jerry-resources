@@ -22,6 +22,7 @@ export type ContentBlock =
       type: "embed";
       src: string;
       title: string;
+      aspectRatio?: string;
       caption?: string;
     }
   | {
@@ -72,6 +73,738 @@ export type Tool = {
 };
 
 export const tools: Tool[] = [
+  {
+    slug: "logo-motion-pipeline",
+    title: {
+      en: "AI Logo Motion Pipeline",
+      zh: "AI Logo Motion 製作攻略",
+    },
+    kicker: {
+      en: "Generate logo concepts, animate SVG parts, then export transparent files",
+      zh: "生成 logo 概念、拆 SVG 動畫、輸出透明素材",
+    },
+    description: {
+      en: "A practical workflow for using logo-generator and pixel2motion to create motion-ready SVG logos, QA the animation, and export transparent MOV/WebM/APNG assets.",
+      zh: "使用 logo-generator 和 pixel2motion 製作可動畫化 SVG logo，完成 motion QA，最後輸出透明 MOV/WebM/APNG 素材。",
+    },
+    coverTitle: {
+      en: "Logo\nMotion",
+      zh: "Logo\nMotion",
+    },
+    keyword: "LOGO",
+    publishedAt: "2026-06-23",
+    hashtags: ["#LogoDesign", "#MotionDesign", "#AIWorkflow"],
+    cover: "/tools/logo-motion-pipeline-cover-main.png",
+    accent: "teal",
+    shareTitle: {
+      en: "Watch the HTML logo animation",
+      zh: "先看 HTML logo 動畫",
+    },
+    shareIntro: {
+      en: "This guide uses AURALIME as one complete example: generate a clean SVG logo, prepare semantic motion parts, animate it in HTML, QA the final frame, then export transparent files for editing.",
+      zh: "這篇用 AURALIME 當作單一完整示範：生成乾淨 SVG logo、整理語意化動畫部件、做成 HTML 動畫、檢查最後一幀，最後輸出可剪輯使用的透明素材。",
+    },
+    featuredMedia: {
+      en: [
+        {
+          type: "embed",
+          src: "/tools/logo-motion-pipeline/auralime-logo-motion.html",
+          title: "AURALIME logo motion HTML demo",
+          aspectRatio: "16 / 9",
+          caption: "Live HTML animation demo for the AURALIME example.",
+        },
+      ],
+      zh: [
+        {
+          type: "embed",
+          src: "/tools/logo-motion-pipeline/auralime-logo-motion.html",
+          title: "AURALIME logo motion HTML demo",
+          aspectRatio: "16 / 9",
+          caption: "AURALIME 範例的 HTML logo 動畫示範。",
+        },
+      ],
+    },
+    shareLinks: [
+      {
+        label: "logo-generator skill",
+        href: "https://github.com/op7418/logo-generator-skill",
+      },
+      {
+        label: "pixel2motion skill",
+        href: "https://github.com/nolangz/pixel2motion",
+      },
+    ],
+    toc: [
+      {
+        label: {
+          en: "1. Pipeline overview",
+          zh: "1. 流程總覽",
+        },
+        href: "#overview",
+      },
+      {
+        label: {
+          en: "2. Install the skills",
+          zh: "2. 安裝 skills",
+        },
+        href: "#install",
+      },
+      {
+        label: {
+          en: "3. Generate logo concepts",
+          zh: "3. 生成 logo 概念",
+        },
+        href: "#logo-generator",
+      },
+      {
+        label: {
+          en: "4. Prepare motion-ready SVG",
+          zh: "4. 整理可動畫化 SVG",
+        },
+        href: "#svg-structure",
+      },
+      {
+        label: {
+          en: "5. Animate with pixel2motion",
+          zh: "5. 使用 pixel2motion 動畫化",
+        },
+        href: "#pixel2motion",
+      },
+      {
+        label: {
+          en: "6. QA the motion",
+          zh: "6. 檢查動畫品質",
+        },
+        href: "#qa",
+      },
+      {
+        label: {
+          en: "7. Export transparent files",
+          zh: "7. 輸出透明素材",
+        },
+        href: "#export",
+      },
+      {
+        label: {
+          en: "8. Final checklist",
+          zh: "8. 最終檢查表",
+        },
+        href: "#checklist",
+      },
+    ],
+    sections: [
+      {
+        id: "overview",
+        heading: {
+          en: "Pipeline overview",
+          zh: "流程總覽",
+        },
+        body: {
+          en: [
+            "The workflow has two main stages: first generate a clean SVG logo, then animate that SVG with separated semantic parts.",
+            {
+              type: "terminal",
+              title: "Pipeline",
+              wrap: true,
+              lines: [
+                "Brand prompt",
+                "  -> logo-generator skill",
+                "  -> 6 logo concept SVGs",
+                "  -> selected final logo.svg",
+                "  -> pixel2motion skill",
+                "  -> motion-ready SVG structure",
+                "  -> motion.css",
+                "  -> logo_motion.html",
+                "  -> QA frames / motion strip",
+                "  -> transparent exports",
+              ],
+            },
+            "This guide uses one example only: AURALIME, a fresh citrus beverage logo designed to be clean, bright, and easy to animate.",
+            {
+              type: "image",
+              src: "/tools/logo-motion-pipeline/images/auralime-final-render.png",
+              alt: "AURALIME final logo render",
+              width: 1680,
+              height: 640,
+              caption: "AURALIME final render.",
+            },
+          ],
+          zh: [
+            "整體流程分成兩大段：先生成乾淨的 SVG logo，再把 SVG 拆成有語意的部件進行動畫。",
+            {
+              type: "terminal",
+              title: "Pipeline",
+              wrap: true,
+              lines: [
+                "Brand prompt",
+                "  -> logo-generator skill",
+                "  -> 6 logo concept SVGs",
+                "  -> selected final logo.svg",
+                "  -> pixel2motion skill",
+                "  -> motion-ready SVG structure",
+                "  -> motion.css",
+                "  -> logo_motion.html",
+                "  -> QA frames / motion strip",
+                "  -> transparent exports",
+              ],
+            },
+            "這篇只用一個例子示範：AURALIME，一個清爽 citrus beverage logo，幾何乾淨、顏色明亮，也很適合拆開動畫。",
+            {
+              type: "image",
+              src: "/tools/logo-motion-pipeline/images/auralime-final-render.png",
+              alt: "AURALIME final logo render",
+              width: 1680,
+              height: 640,
+              caption: "AURALIME final render。",
+            },
+          ],
+        },
+      },
+      {
+        id: "install",
+        heading: {
+          en: "Step 1: Install the skills",
+          zh: "Step 1：安裝 skills",
+        },
+        body: {
+          en: [
+            "This workflow uses two Codex skills: `logo-generator` for SVG logo concepts, and `pixel2motion` for turning SVG parts into motion.",
+            {
+              type: "terminal",
+              title: "Install logo-generator",
+              lines: [
+                "$ python3 /Users/jfon/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \\",
+                "  --repo op7418/logo-generator-skill \\",
+                "  --path . \\",
+                "  --name logo-generator",
+              ],
+            },
+            {
+              type: "terminal",
+              title: "Install pixel2motion",
+              lines: [
+                "$ python3 /Users/jfon/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \\",
+                "  --repo nolangz/pixel2motion \\",
+                "  --path . \\",
+                "  --name pixel2motion",
+              ],
+            },
+            "After installing new skills, restart Codex so they appear as normal available skills.",
+          ],
+          zh: [
+            "這套流程使用兩個 Codex skills：`logo-generator` 負責生成 SVG logo 概念，`pixel2motion` 負責把 SVG 部件變成 motion。",
+            {
+              type: "terminal",
+              title: "Install logo-generator",
+              lines: [
+                "$ python3 /Users/jfon/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \\",
+                "  --repo op7418/logo-generator-skill \\",
+                "  --path . \\",
+                "  --name logo-generator",
+              ],
+            },
+            {
+              type: "terminal",
+              title: "Install pixel2motion",
+              lines: [
+                "$ python3 /Users/jfon/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \\",
+                "  --repo nolangz/pixel2motion \\",
+                "  --path . \\",
+                "  --name pixel2motion",
+              ],
+            },
+            "安裝新 skill 之後，記得重啟 Codex，skill 才會正常出現在可用列表裡。",
+          ],
+        },
+      },
+      {
+        id: "logo-generator",
+        heading: {
+          en: "Step 2: Generate logo concepts",
+          zh: "Step 2：生成 logo 概念",
+        },
+        body: {
+          en: [
+            "Ask `logo-generator` for six distinct SVG concepts first. Do not jump straight into animation. The selected logo needs simple geometry and parts that can become animation actors.",
+            {
+              type: "terminal",
+              title: "Base Logo Prompt",
+              wrap: true,
+              lines: [
+                "Generate 6 distinct SVG logo concepts.",
+                "Use a 0 0 100 100 viewBox for icon concepts.",
+                "Keep the geometry simple, scalable, and motion-ready.",
+                "Avoid decorative clutter.",
+                "Use clear semantic parts that can later become animation actors.",
+                "Create one selected direction and explain why it was selected.",
+                "Export final SVG and PNG source assets.",
+              ],
+            },
+            "Example brand prompt:",
+            {
+              type: "terminal",
+              title: "AURALIME Prompt",
+              wrap: true,
+              lines: [
+                "Create a fresh citrus beverage logo named \"AURALIME\".",
+                "The visual language should feel fresh, buoyant, crisp, sunny, and clean.",
+                "Use lime green, citrus yellow, orange, and deep green.",
+                "Explore lime slices, leaves, droplets, liquid waves, bubbles, and packaging-friendly badge forms.",
+                "Generate 6 distinct SVG logo concepts.",
+                "The selected concept should be easy to animate as separated parts: rind, core, citrus segment lines, leaf, droplet, splash wave, wordmark, and underline wave.",
+                "Avoid overly cute fruit mascots.",
+                "Keep the logo clean enough for a beverage brand and bright enough for a short-form video hook.",
+              ],
+            },
+            "Selection rule: choose the concept with the clearest semantic parts, not just the prettiest static image.",
+          ],
+          zh: [
+            "先請 `logo-generator` 生成六個不同 SVG 概念，不要一開始就做動畫。被選中的 logo 必須幾何簡單，且有明確部件可以成為 animation actors。",
+            {
+              type: "terminal",
+              title: "Base Logo Prompt",
+              wrap: true,
+              lines: [
+                "Generate 6 distinct SVG logo concepts.",
+                "Use a 0 0 100 100 viewBox for icon concepts.",
+                "Keep the geometry simple, scalable, and motion-ready.",
+                "Avoid decorative clutter.",
+                "Use clear semantic parts that can later become animation actors.",
+                "Create one selected direction and explain why it was selected.",
+                "Export final SVG and PNG source assets.",
+              ],
+            },
+            "品牌 prompt 範例：",
+            {
+              type: "terminal",
+              title: "AURALIME Prompt",
+              wrap: true,
+              lines: [
+                "Create a fresh citrus beverage logo named \"AURALIME\".",
+                "The visual language should feel fresh, buoyant, crisp, sunny, and clean.",
+                "Use lime green, citrus yellow, orange, and deep green.",
+                "Explore lime slices, leaves, droplets, liquid waves, bubbles, and packaging-friendly badge forms.",
+                "Generate 6 distinct SVG logo concepts.",
+                "The selected concept should be easy to animate as separated parts: rind, core, citrus segment lines, leaf, droplet, splash wave, wordmark, and underline wave.",
+                "Avoid overly cute fruit mascots.",
+                "Keep the logo clean enough for a beverage brand and bright enough for a short-form video hook.",
+              ],
+            },
+            "選擇規則：不要只選靜態圖最好看的，而是選語意部件最清楚、最適合拆開動畫的方向。",
+          ],
+        },
+      },
+      {
+        id: "svg-structure",
+        heading: {
+          en: "Step 3: Prepare motion-ready SVG",
+          zh: "Step 3：整理可動畫化 SVG",
+        },
+        body: {
+          en: [
+            "The final `logo.svg` should be built for motion, not just static display.",
+            {
+              type: "list",
+              items: [
+                "Use stable IDs for animated parts.",
+                "Keep one semantic part per element or group.",
+                "Use `pathLength=\"1\"` on draw-on paths.",
+                "Avoid noisy trace geometry.",
+                "Keep text and mark separated.",
+                "Use transforms on semantic groups, not anonymous `nth-child` selectors.",
+              ],
+            },
+            "Good SVG actor IDs look like this:",
+            {
+              type: "terminal",
+              title: "Semantic IDs",
+              wrap: true,
+              lines: [
+                "AURALIME: #lime-rind, #lime-core, #segments, #leaf, #droplet, #splash-wave, #wordmark, #word-wave",
+              ],
+            },
+          ],
+          zh: [
+            "最後的 `logo.svg` 要為 motion 準備，而不是只求靜態顯示。",
+            {
+              type: "list",
+              items: [
+                "每個會動的部件要有穩定 ID。",
+                "一個元素或 group 只代表一個語意部件。",
+                "會 draw-on 的路徑加上 `pathLength=\"1\"`。",
+                "避免雜亂的 trace geometry。",
+                "文字和圖形標誌要分開。",
+                "動畫用 semantic groups 做 transform，不要依賴匿名 `nth-child` selectors。",
+              ],
+            },
+            "好的 SVG actor ID 像這樣：",
+            {
+              type: "terminal",
+              title: "Semantic IDs",
+              wrap: true,
+              lines: [
+                "AURALIME: #lime-rind, #lime-core, #segments, #leaf, #droplet, #splash-wave, #wordmark, #word-wave",
+              ],
+            },
+          ],
+        },
+      },
+      {
+        id: "pixel2motion",
+        heading: {
+          en: "Step 4: Animate with pixel2motion",
+          zh: "Step 4：使用 pixel2motion 動畫化",
+        },
+        body: {
+          en: [
+            "Convert the final SVG into PNG source assets first. Use transparent PNG for export work, and a white-background PNG for static QA.",
+            {
+              type: "terminal",
+              title: "SVG to PNG",
+              lines: [
+                "$ python /tmp/logo-generator-skill/scripts/svg_to_png.py \\",
+                "  logo.svg \\",
+                "  --output source_transparent.png \\",
+                "  --width 1680 \\",
+                "  --height 640",
+              ],
+            },
+            {
+              type: "terminal",
+              title: "White-background QA source",
+              wrap: true,
+              lines: [
+                "from PIL import Image",
+                "",
+                "img = Image.open(\"source_transparent.png\").convert(\"RGBA\")",
+                "base = Image.new(\"RGBA\", img.size, \"white\")",
+                "base.alpha_composite(img)",
+                "base.convert(\"RGB\").save(\"source.png\")",
+              ],
+            },
+            "Then ask pixel2motion to write `motion.css` and package the result into `logo_motion.html`.",
+            {
+              type: "terminal",
+              title: "Build animated HTML",
+              lines: [
+                "$ python /tmp/pixel2motion/scripts/animate_svg_showcase.py \\",
+                "  logo.svg \\",
+                "  --css motion.css \\",
+                "  --out logo_motion.html \\",
+                "  --title \"AURALIME Logo Motion\" \\",
+                "  --duration-hint 1280 \\",
+                "  --background \"#f4fff2\"",
+              ],
+            },
+            "Motion prompt example:",
+            {
+              type: "terminal",
+              title: "AURALIME Motion Prompt",
+              wrap: true,
+              lines: [
+                "Animate AURALIME as a fresh citrus beverage hook.",
+                "The reveal should feel fresh, buoyant, and crisp.",
+                "Start with the lime forming from a small blurred seed.",
+                "Expand the rind and core like a ripple.",
+                "Rotate the leaf into place on a soft arc.",
+                "Draw the citrus segment lines in staggered order.",
+                "Drop the orange citrus droplet with a gentle squash and rebound.",
+                "Reveal the wordmark and complete the liquid wave underline.",
+                "Final duration: 1280ms.",
+              ],
+            },
+          ],
+          zh: [
+            "先把 final SVG 轉成 PNG source assets。透明 PNG 用於輸出，白底 PNG 用於 static QA。",
+            {
+              type: "terminal",
+              title: "SVG to PNG",
+              lines: [
+                "$ python /tmp/logo-generator-skill/scripts/svg_to_png.py \\",
+                "  logo.svg \\",
+                "  --output source_transparent.png \\",
+                "  --width 1680 \\",
+                "  --height 640",
+              ],
+            },
+            {
+              type: "terminal",
+              title: "White-background QA source",
+              wrap: true,
+              lines: [
+                "from PIL import Image",
+                "",
+                "img = Image.open(\"source_transparent.png\").convert(\"RGBA\")",
+                "base = Image.new(\"RGBA\", img.size, \"white\")",
+                "base.alpha_composite(img)",
+                "base.convert(\"RGB\").save(\"source.png\")",
+              ],
+            },
+            "接著讓 pixel2motion 撰寫 `motion.css`，並打包成 `logo_motion.html`。",
+            {
+              type: "terminal",
+              title: "Build animated HTML",
+              lines: [
+                "$ python /tmp/pixel2motion/scripts/animate_svg_showcase.py \\",
+                "  logo.svg \\",
+                "  --css motion.css \\",
+                "  --out logo_motion.html \\",
+                "  --title \"AURALIME Logo Motion\" \\",
+                "  --duration-hint 1280 \\",
+                "  --background \"#f4fff2\"",
+              ],
+            },
+            "Motion prompt 範例：",
+            {
+              type: "terminal",
+              title: "AURALIME Motion Prompt",
+              wrap: true,
+              lines: [
+                "Animate AURALIME as a fresh citrus beverage hook.",
+                "The reveal should feel fresh, buoyant, and crisp.",
+                "Start with the lime forming from a small blurred seed.",
+                "Expand the rind and core like a ripple.",
+                "Rotate the leaf into place on a soft arc.",
+                "Draw the citrus segment lines in staggered order.",
+                "Drop the orange citrus droplet with a gentle squash and rebound.",
+                "Reveal the wordmark and complete the liquid wave underline.",
+                "Final duration: 1280ms.",
+              ],
+            },
+          ],
+        },
+      },
+      {
+        id: "qa",
+        heading: {
+          en: "Step 5: QA the motion",
+          zh: "Step 5：檢查動畫品質",
+        },
+        body: {
+          en: [
+            "Do not trust the animation just because it looks cool. Check static fit, motion frames, and final-frame alignment.",
+            {
+              type: "terminal",
+              title: "Static geometry QA",
+              lines: [
+                "$ python /tmp/pixel2motion/scripts/render_overlay.py \\",
+                "  logo.svg \\",
+                "  source.png \\",
+                "  --out outputs/fit_iterations/01_static_overlay.png \\",
+                "  --render-out outputs/final_render.png \\",
+                "  --report outputs/fit_metrics.json",
+                "",
+                "$ python /tmp/pixel2motion/scripts/overlay_progress_strip.py \\",
+                "  --source source.png \\",
+                "  --dir outputs/fit_iterations \\",
+                "  --pattern \"*overlay*.png\" \\",
+                "  --final-image outputs/final_render.png \\",
+                "  --out outputs/overlay_progress_strip.png",
+              ],
+            },
+            {
+              type: "image",
+              src: "/tools/logo-motion-pipeline/images/auralime-overlay-progress.png",
+              alt: "AURALIME overlay QA progress strip",
+              width: 3852,
+              height: 544,
+              caption: "Overlay progress strip checks whether SVG geometry matches the intended static source.",
+            },
+            "Then capture deterministic frames with `?t=` timestamps.",
+            {
+              type: "terminal",
+              title: "Motion frame capture",
+              lines: [
+                "$ python /tmp/pixel2motion/scripts/capture_motion_frames.py \\",
+                "  logo_motion.html \\",
+                "  --times 0,210,420,560,740,920,1160,1280 \\",
+                "  --out outputs/motion_frames \\",
+                "  --strip outputs/motion_strip.png \\",
+                "  --report outputs/motion_capture_report.json",
+              ],
+            },
+            {
+              type: "image",
+              src: "/tools/logo-motion-pipeline/images/auralime-motion-strip.png",
+              alt: "AURALIME logo motion strip",
+              width: 4116,
+              height: 252,
+              caption: "Motion strip: quick evidence that the logo has anticipation, action, overlap, and final settle.",
+            },
+            "Final-frame check compares `?static=1` with `?t=<final-duration>`. In this AURALIME example, the check reached `max_abs_diff: 0`, meaning the animation lands exactly on the final static logo.",
+          ],
+          zh: [
+            "不要因為動畫看起來炫就直接收工。至少要檢查 static fit、motion frames、final-frame alignment。",
+            {
+              type: "terminal",
+              title: "Static geometry QA",
+              lines: [
+                "$ python /tmp/pixel2motion/scripts/render_overlay.py \\",
+                "  logo.svg \\",
+                "  source.png \\",
+                "  --out outputs/fit_iterations/01_static_overlay.png \\",
+                "  --render-out outputs/final_render.png \\",
+                "  --report outputs/fit_metrics.json",
+                "",
+                "$ python /tmp/pixel2motion/scripts/overlay_progress_strip.py \\",
+                "  --source source.png \\",
+                "  --dir outputs/fit_iterations \\",
+                "  --pattern \"*overlay*.png\" \\",
+                "  --final-image outputs/final_render.png \\",
+                "  --out outputs/overlay_progress_strip.png",
+              ],
+            },
+            {
+              type: "image",
+              src: "/tools/logo-motion-pipeline/images/auralime-overlay-progress.png",
+              alt: "AURALIME overlay QA progress strip",
+              width: 3852,
+              height: 544,
+              caption: "Overlay progress strip 用來檢查 SVG geometry 是否對齊原始靜態 source。",
+            },
+            "接著用 `?t=` timestamp 捕捉 deterministic frames。",
+            {
+              type: "terminal",
+              title: "Motion frame capture",
+              lines: [
+                "$ python /tmp/pixel2motion/scripts/capture_motion_frames.py \\",
+                "  logo_motion.html \\",
+                "  --times 0,210,420,560,740,920,1160,1280 \\",
+                "  --out outputs/motion_frames \\",
+                "  --strip outputs/motion_strip.png \\",
+                "  --report outputs/motion_capture_report.json",
+              ],
+            },
+            {
+              type: "image",
+              src: "/tools/logo-motion-pipeline/images/auralime-motion-strip.png",
+              alt: "AURALIME logo motion strip",
+              width: 4116,
+              height: 252,
+              caption: "Motion strip 可以快速檢查動畫是否有 anticipation、action、overlap 和 final settle。",
+            },
+            "Final-frame check 會比較 `?static=1` 和 `?t=<final-duration>`。AURALIME 這個例子達到 `max_abs_diff: 0`，代表動畫最後一幀精準落在靜態 logo。",
+          ],
+        },
+      },
+      {
+        id: "export",
+        heading: {
+          en: "Step 6: Export transparent files",
+          zh: "Step 6：輸出透明素材",
+        },
+        body: {
+          en: [
+            "Use preview exports for quick review, but use transparent exports for editing.",
+            {
+              type: "terminal",
+              title: "Transparent Export",
+              lines: ["$ python export_logo_motions_transparent.py"],
+            },
+            {
+              type: "list",
+              items: [
+                "MOV ProRes 4444: `1920x1080`, `30fps`, alpha channel.",
+                "WebM VP9 alpha: `1920x1080`, `30fps`, alpha channel.",
+                "APNG: `1920x1080`, alpha channel.",
+                "PNG sequence: `exports/transparent_frames/`.",
+              ],
+            },
+            "Recommended editing files:",
+            {
+              type: "terminal",
+              title: "Final Files",
+              wrap: true,
+              lines: ["auralime-logo-motion/exports/auralime-logo-motion-transparent.mov"],
+            },
+            "Avoid using GIF as the final file. GIF is limited to 256 colors and often looks blurry around edges and gradients.",
+          ],
+          zh: [
+            "Preview export 可以用來快速檢查，但真正剪輯要用透明輸出檔。",
+            {
+              type: "terminal",
+              title: "Transparent Export",
+              lines: ["$ python export_logo_motions_transparent.py"],
+            },
+            {
+              type: "list",
+              items: [
+                "MOV ProRes 4444：`1920x1080`、`30fps`、alpha channel。",
+                "WebM VP9 alpha：`1920x1080`、`30fps`、alpha channel。",
+                "APNG：`1920x1080`、alpha channel。",
+                "PNG sequence：`exports/transparent_frames/`。",
+              ],
+            },
+            "推薦放進剪輯軟體的檔案：",
+            {
+              type: "terminal",
+              title: "Final Files",
+              wrap: true,
+              lines: ["auralime-logo-motion/exports/auralime-logo-motion-transparent.mov"],
+            },
+            "不要把 GIF 當最後交付檔。GIF 只有 256 色，邊緣和漸層通常會糊。",
+          ],
+        },
+      },
+      {
+        id: "checklist",
+        heading: {
+          en: "Final checklist",
+          zh: "最終檢查表",
+        },
+        body: {
+          en: [
+            {
+              type: "list",
+              items: [
+                "Logo concept has clean geometry and clear semantic actors.",
+                "`logo.svg` has stable IDs for all animated parts.",
+                "Draw-on paths use `pathLength=\"1\"`.",
+                "`source_transparent.png` and `source.png` both exist.",
+                "Overlay QA does not reveal major geometry mismatch.",
+                "Motion strip shows the intended timing and personality.",
+                "Final animated frame matches the static logo.",
+                "Transparent export has real alpha, not a fake solid background.",
+              ],
+            },
+          ],
+          zh: [
+            {
+              type: "list",
+              items: [
+                "Logo concept 幾何乾淨，且有明確 semantic actors。",
+                "`logo.svg` 裡所有動畫部件都有穩定 ID。",
+                "Draw-on paths 使用 `pathLength=\"1\"`。",
+                "`source_transparent.png` 和 `source.png` 都已存在。",
+                "Overlay QA 沒有明顯 geometry mismatch。",
+                "Motion strip 能看出預期 timing 和 motion personality。",
+                "動畫最後一幀與靜態 logo 對齊。",
+                "透明輸出是真 alpha，不是假背景色。",
+              ],
+            },
+          ],
+        },
+      },
+    ],
+    resources: [
+      {
+        label: "logo-generator skill",
+        href: "https://github.com/op7418/logo-generator-skill",
+      },
+      {
+        label: "pixel2motion skill",
+        href: "https://github.com/nolangz/pixel2motion",
+      },
+      {
+        label: "AURALIME motion strip",
+        href: "/tools/logo-motion-pipeline/images/auralime-motion-strip.png",
+      },
+      {
+        label: "AURALIME overlay QA",
+        href: "/tools/logo-motion-pipeline/images/auralime-overlay-progress.png",
+      },
+    ],
+  },
   {
     slug: "fpv-google-flow",
     title: {

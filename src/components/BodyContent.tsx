@@ -122,7 +122,10 @@ export function BodyContent({ items }: { items: BodyItem[] }) {
         if (item.type === "embed") {
           return (
             <figure key={index} className="space-y-2">
-              <div className="aspect-square overflow-hidden border border-[#d8d0c3] bg-[#dfe7eb]">
+              <div
+                className="overflow-hidden border border-[#d8d0c3] bg-[#dfe7eb]"
+                style={{ aspectRatio: item.aspectRatio ?? "1 / 1" }}
+              >
                 <iframe
                   src={item.src}
                   title={item.title}
